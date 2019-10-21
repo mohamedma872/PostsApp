@@ -1,15 +1,96 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
-    ext.kotlin_version = '1.3.50'
+    ext.versions = [
+            'minSdk'           : 16,
+            'compileSdk'       : 28,
+
+            'buildTools'       : '28.0.3',
+            'androidPlugin'    : '3.2.1',
+            'kotlin'           : '1.3.11',
+            'gms'              : '3.1.0',
+            'dagger'           : '2.12',
+            'gson'             : '2.8.0',
+            'retrofit'         : '2.3.0',
+            'retrofitRxAdapter': '1.0.0',
+            'okhttp'           : '3.9.0',
+            'okhttpDownloader' : '1.1.0',
+            'picasso'          : '2.5.2',
+            'rxJava'           : '2.1.7',
+            'rxAndroid'        : '2.0.1',
+            'jodaTime'         : "2.9.9",
+            'stetho'           : '1.5.0',
+            'junit'            : '4.12',
+            'atsl'             : '1.0.1',
+            'mockitoKotlin'    : '1.5.0',
+            'robolectric'      : '4.3',
+            'sourceCompat'     : JavaVersion.VERSION_1_8,
+            'targetCompat'     : JavaVersion.VERSION_1_8
+    ]
+
+
+    ext.deps = [
+            android   : [
+                    'gradlePlugin'   : "com.android.tools.build:gradle:${versions.androidPlugin}",
+                    'lifecycleExt'   : 'androidx.lifecycle:lifecycle-extensions:2.0.0',
+                    'lifecycleCommon': 'androidx.lifecycle:lifecycle-common-java8:2.0.0',
+                    'roomRuntime'    : 'androidx.room:room-runtime:2.0.0',
+                    'roomCompiler'   : 'androidx.room:room-compiler:2.0.0',
+                    'roomRx'         : 'androidx.room:room-rxjava2:2.0.0',
+            ],
+            support   : [
+                    'appCompat'    : 'androidx.appcompat:appcompat:1.0.0',
+                    'recyclerView' : 'androidx.recyclerview:recyclerview:1.0.0',
+                    'cardView'     : 'androidx.cardview:cardview:1.0.0',
+                    'support'      : 'androidx.legacy:legacy-support-v4:1.0.0',
+                    'designSupport': 'com.google.android.material:material:1.0.0',
+            ],
+            kotlin    : [
+                    'gradlePlugin': "org.jetbrains.kotlin:kotlin-gradle-plugin:${versions.kotlin}",
+                    'stdlib7'      : "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${versions.kotlin}",
+            ],
+            reactivex : [
+                    'rxJava'   : "io.reactivex.rxjava2:rxjava:${versions.rxJava}",
+                    'rxAndroid': "io.reactivex.rxjava2:rxandroid:${versions.rxAndroid}"
+            ],
+            google    : [
+                    'gmsPlugin'      : "com.google.gms:google-services:${versions.gms}",
+                    'dagger'         : "com.google.dagger:dagger:${versions.dagger}",
+                    'daggerProcessor': "com.google.dagger:dagger-compiler:${versions.dagger}",
+                    'gson'           : "com.google.code.gson:gson:${versions.gson}",
+            ],
+            square    : [
+                    'retrofit'         : "com.squareup.retrofit2:retrofit:${versions.retrofit}",
+                    'gsonConverter'    : "com.squareup.retrofit2:converter-gson:${versions.retrofit}",
+                    'okhttp'           : "com.squareup.okhttp3:okhttp:${versions.okhttp}",
+                    'picasso'          : "com.squareup.picasso:picasso:${versions.picasso}",
+                    'okhttpDownloader' : "com.jakewharton.picasso:picasso2-okhttp3-downloader:${versions.okhttpDownloader}",
+                    'retrofitRxAdapter': "com.jakewharton.retrofit:retrofit2-rxjava2-adapter:${versions.retrofitRxAdapter}",
+            ],
+           
+            additional: [
+                    'jodaTime': "joda-time:joda-time:${versions.jodaTime}"
+            ],
+            test      : [
+                    'junit'          : "junit:junit:${versions.junit}",
+                    'atslRunner'     : 'androidx.test.ext:junit:1.1.0',
+                    'atslRules'      : 'androidx.test:rules:1.1.0',
+                    'mockitoKotlin'  : "com.nhaarman:mockito-kotlin:${versions.mockitoKotlin}",
+                    'robolectric'    : "org.robolectric:robolectric:${versions.robolectric}",
+                    'mockWebServer'  : "com.squareup.okhttp3:mockwebserver:${versions.okhttp}",
+                    'roomTesting'    : 'androidx.room:room-testing:2.0.0',
+                    'livedataTesting': 'androidx.arch.core:core-testing:2.0.0',
+            ]
+    ]
     repositories {
         google()
         jcenter()
-        
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.5.1'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath deps.android.gradlePlugin
+        classpath deps.google.gmsPlugin
+        classpath deps.kotlin.gradlePlugin
+
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
@@ -19,7 +100,6 @@ allprojects {
     repositories {
         google()
         jcenter()
-        
     }
 }
 
