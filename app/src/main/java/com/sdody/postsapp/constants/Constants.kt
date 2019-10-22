@@ -1,4 +1,4 @@
-package com.sdody.postsapp
+package com.sdody.postsapp.constants
 
 object Constants {
     val API_URL = "http://jsonplaceholder.typicode.com/"

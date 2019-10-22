@@ -1,4 +1,4 @@
-package com.sdody.postsapp
+package com.sdody.postsapp.application
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity

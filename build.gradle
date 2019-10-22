@@ -37,6 +37,7 @@ buildscript {
                     'roomRuntime'    : 'androidx.room:room-runtime:2.0.0',
                     'roomCompiler'   : 'androidx.room:room-compiler:2.0.0',
                     'roomRx'         : 'androidx.room:room-rxjava2:2.0.0',
+                    'Paging'         : 'androidx.arch.paging:runtime:1.0.1',
             ],
             support   : [
                     'appCompat'    : 'androidx.appcompat:appcompat:1.0.0',
@@ -67,7 +68,7 @@ buildscript {
                     'okhttpDownloader' : "com.jakewharton.picasso:picasso2-okhttp3-downloader:${versions.okhttpDownloader}",
                     'retrofitRxAdapter': "com.jakewharton.retrofit:retrofit2-rxjava2-adapter:${versions.retrofitRxAdapter}",
             ],
-           
+
             additional: [
                     'jodaTime': "joda-time:joda-time:${versions.jodaTime}"
             ],
