@@ -18,7 +18,9 @@ class PostListAdapter
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        holder.itemView.tag = position
         (holder as PostViewHolder).bind(getItem(position))
+
         holder.itemView.btnDelete.setOnClickListener {
             interaction?.postDeleted(
                 getItem(position),

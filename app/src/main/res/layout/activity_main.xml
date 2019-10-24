@@ -2,14 +2,10 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/srlPosts"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".list.ListActivity">
+
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvPosts"
@@ -20,7 +16,7 @@
             tools:listitem="@layout/list_item"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"

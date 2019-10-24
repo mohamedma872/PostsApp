@@ -1,6 +1,7 @@
 package com.sdody.postsapp.list.view
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -14,6 +15,7 @@ import com.sdody.postsapp.application.BaseActivity
 import com.sdody.postsapp.commons.data.local.Post
 import com.sdody.postsapp.commons.networking.Outcome
 import com.sdody.postsapp.commons.networking.State
+import com.sdody.postsapp.details.DetailActivity
 import com.sdody.postsapp.list.adapter.Interaction
 import com.sdody.postsapp.list.adapter.PostListAdapter
 import com.sdody.postsapp.list.di.PostDH
@@ -75,7 +77,7 @@ class ListActivity : BaseActivity(), Interaction, View.OnClickListener {
             Log.d(TAG, "initiateDataListener: $outcome")
             when (outcome) {
 
-                is Outcome.Progress -> srlPosts.isRefreshing = outcome.loading
+                //is Outcome.Progress -> srlPosts.isRefreshing = outcome.loading
 
                 is Outcome.Success -> {
                     Log.d(TAG, "initiateDataListener: Successfully loaded data")
@@ -101,7 +103,7 @@ class ListActivity : BaseActivity(), Interaction, View.OnClickListener {
             }
         })
         viewModel.getAddedCallback().observe(this, Observer<State> { state ->
-//            if (state == State.LOADING) {
+            //            if (state == State.LOADING) {
 //
 //            }
             if (state == State.DONE) {
@@ -120,7 +122,7 @@ class ListActivity : BaseActivity(), Interaction, View.OnClickListener {
             }
         })
         viewModel.getDeletedCallback().observe(this, Observer<State> { state ->
-//            if (state == State.LOADING) {
+            //            if (state == State.LOADING) {
 //
 //            }
             if (state == State.DONE) {
@@ -139,7 +141,7 @@ class ListActivity : BaseActivity(), Interaction, View.OnClickListener {
             }
         })
         viewModel.getUpdatedCallback().observe(this, Observer<State> { state ->
-//            if (state == State.LOADING) {
+            //            if (state == State.LOADING) {
 //
 //            }
             if (state == State.DONE) {
@@ -159,7 +161,7 @@ class ListActivity : BaseActivity(), Interaction, View.OnClickListener {
         })
     }
 
-  private  fun showNewDialog() {
+    private fun showNewDialog() {
         val mBuilder = AlertDialog.Builder(this)
 
         val mDialogView = LayoutInflater.from(this).inflate(R.layout.add_post, null)
@@ -189,7 +191,7 @@ class ListActivity : BaseActivity(), Interaction, View.OnClickListener {
         }
     }
 
-    private  fun showDeleteDialog(position: Int, post: Post?) {
+    private fun showDeleteDialog(position: Int, post: Post?) {
         val dialogBuilder = AlertDialog.Builder(this)
         dialogBuilder.setTitle("Delete")
         dialogBuilder.setMessage("Confirm delete?")
@@ -206,7 +208,7 @@ class ListActivity : BaseActivity(), Interaction, View.OnClickListener {
         b.show()
     }
 
-    private  fun showUpdateDialog(position: Int, post: Post?) {
+    private fun showUpdateDialog(position: Int, post: Post?) {
         val mBuilder = AlertDialog.Builder(this)
 
         val mDialogView = LayoutInflater.from(this).inflate(R.layout.add_post, null)
@@ -232,7 +234,7 @@ class ListActivity : BaseActivity(), Interaction, View.OnClickListener {
 
                 val localpost = Post(1, post.postId, tittle, body)
                 viewModel.updatePost(localpost)
-                adapter.updateItem(localpost,position)
+                adapter.updateItem(localpost, position)
             }
 
         }
@@ -244,8 +246,10 @@ class ListActivity : BaseActivity(), Interaction, View.OnClickListener {
     }
 
     override fun postClicked(post: Post) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-        //DetailsActivity.start(context, post, tvTitle, tvBody, tvAuthorName, ivAvatar)
+        val intent = Intent(this, DetailActivity::class.java)
+        intent.putExtra("tittle", post.postTitle)
+        intent.putExtra("body", post.postBody)
+        startActivity(intent)
     }
 
     override fun postEdit(post: Post?, position: Int) {
