@@ -19,7 +19,7 @@ class AppModule(val context: Context) {
 
     @Provides
     @Singleton
-    fun scheduler(): Scheduler {
+    fun providescheduler(): Scheduler {
         return AppScheduler()
     }
 }

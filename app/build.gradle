@@ -93,4 +93,5 @@ dependencies {
     androidTestImplementation deps.test.atslRules
     androidTestImplementation deps.test.roomTesting
     androidTestImplementation deps.test.livedataTesting
+    implementation 'androidx.paging:paging-runtime-ktx:2.1.0'
 }

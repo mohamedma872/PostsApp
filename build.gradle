@@ -37,7 +37,7 @@ buildscript {
                     'roomRuntime'    : 'androidx.room:room-runtime:2.0.0',
                     'roomCompiler'   : 'androidx.room:room-compiler:2.0.0',
                     'roomRx'         : 'androidx.room:room-rxjava2:2.0.0',
-                    'Paging'         : 'androidx.arch.paging:runtime:1.0.1',
+                    'Paging'         : 'androidx.paging:paging-runtime-ktx:2.1.0',
             ],
             support   : [
                     'appCompat'    : 'androidx.appcompat:appcompat:1.0.0',

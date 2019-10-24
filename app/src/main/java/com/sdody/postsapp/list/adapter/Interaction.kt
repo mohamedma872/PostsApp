@@ -1,4 +1,4 @@
-package com.sdody.postsapp.list
+package com.sdody.postsapp.list.adapter
 
 import com.sdody.postsapp.commons.data.local.Post
 
