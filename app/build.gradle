@@ -69,6 +69,7 @@ dependencies {
     api deps.square.okhttpDownloader
 
     api deps.square.retrofit
+    api deps.square.logger
     api deps.square.okhttp
     api deps.square.gsonConverter
     api deps.square.retrofitRxAdapter

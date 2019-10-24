@@ -19,5 +19,6 @@ interface ListComponent {
     fun scheduler(): Scheduler
 
     fun inject(listActivity: ListActivity)
+
 }
 

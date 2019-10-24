@@ -1,5 +1,6 @@
 package com.sdody.postsapp.list.model
 
+import androidx.paging.DataSource
 import com.sdody.postsapp.commons.data.local.Post
 import com.sdody.postsapp.commons.data.local.PostDb
 import com.sdody.postsapp.commons.extensions.performOnBack
@@ -8,11 +9,15 @@ import io.reactivex.Completable
 import io.reactivex.Flowable
 
 class ListLocalData(private val postDb: PostDb, private val scheduler: Scheduler) : ListDataContract.Local {
-    override fun EditPost(post: Post) {
+    override fun allPosts(): DataSource.Factory<Int, Post> {
+      return  postDb.postDao().alPosts()
+    }
+
+    override fun editPost(post: Post) {
         postDb.postDao().update(post)
     }
 
-    override fun AddPost(post: Post) {
+    override fun addPost(post: Post) {
         postDb.postDao().insert(post)
     }
 

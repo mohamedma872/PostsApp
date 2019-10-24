@@ -6,11 +6,15 @@ import io.reactivex.Completable
 import io.reactivex.Single
 
 class ListRemoteData(private val postService: PostService) : ListDataContract.Remote{
-    override fun EditPost(post: Post):Completable {
+    override fun getPosts(page: Int, pageSize: Int):Single<List<Post>> {
+        return postService.getPosts(page,pageSize)
+    }
+
+    override fun editPost(post: Post):Completable {
        return postService.updatePost(post.postId,post)
     }
 
-    override fun AddPost(post: Post):Completable {
+    override fun addPost(post: Post):Completable {
         return  postService.addPost(post)
     }
 
@@ -18,9 +22,7 @@ class ListRemoteData(private val postService: PostService) : ListDataContract.Re
         return  postService.deletePost(post.postId)
     }
 
-    override fun getPosts(): Single<List<Post>> {
-        return postService.getPosts()
-    }
+
 
 
 }

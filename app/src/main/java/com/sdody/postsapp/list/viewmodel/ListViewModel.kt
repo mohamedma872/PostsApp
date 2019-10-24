@@ -3,10 +3,15 @@ package com.sdody.postsapp.list.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.paging.DataSource
+import androidx.paging.LivePagedListBuilder
+import androidx.paging.PagedList
 import com.sdody.postsapp.commons.data.local.Post
 import com.sdody.postsapp.commons.extensions.toLiveData
 import com.sdody.postsapp.commons.networking.Outcome
 import com.sdody.postsapp.commons.networking.State
+import com.sdody.postsapp.constants.Constants.INITIAL_LOAD_SIZE_HINT
+import com.sdody.postsapp.constants.Constants.PAGE_SIZE
 import com.sdody.postsapp.list.model.ListDataContract
 
 import io.reactivex.disposables.CompositeDisposable
@@ -14,41 +19,64 @@ import io.reactivex.disposables.CompositeDisposable
 class ListViewModel(private val repo: ListDataContract.Repository,
                     private val compositeDisposable: CompositeDisposable) : ViewModel() {
 
+    //for load data on demand
     val postsOutcome: LiveData<Outcome<List<Post>>> by lazy {
         //Convert publish subject to livedata
         repo.postFetchOutcome.toLiveData(compositeDisposable)
     }
-     val PostAddedCallback: MutableLiveData<State> = MutableLiveData()
-     val PostUpdatedCallback: MutableLiveData<State> = MutableLiveData()
-     val PostDeletedCallback: MutableLiveData<State> = MutableLiveData()
-    fun getPosts() {
-        if (postsOutcome.value == null)
-            repo.getPosts()
-    }
-    fun AddPost(post:Post) {
+    //paging
+    // var postsDataSourceFactory: PostsDataSourceFactory
+    var postList: LiveData<PagedList<Post>>
+    init {
+//        postsDataSourceFactory = PostsDataSourceFactory(repo)
+//        val config = PagedList.Config.Builder()
+//            .setPageSize(PAGE_SIZE)
+//            .setInitialLoadSizeHint(INITIAL_LOAD_SIZE_HINT)
+//            .setEnablePlaceholders(false)
+//            .build()
+//        postList = LivePagedListBuilder(postsDataSourceFactory, config).build()
 
-            repo.AddPost(post)
+        val factory: DataSource.Factory<Int, Post> = repo.allPosts()
+        val config = PagedList.Config.Builder()
+            .setPageSize(PAGE_SIZE)
+            .setInitialLoadSizeHint(INITIAL_LOAD_SIZE_HINT)
+            .setEnablePlaceholders(false)
+            .build()
+        postList = LivePagedListBuilder(factory, config).build()
     }
-    fun DeletePost(post:Post) {
+
+
+    fun getPosts() {
+       if (postsOutcome.value == null)
+          repo.getPostsFromRemote(1,PAGE_SIZE)
+    }
+    fun addPost(post:Post) {
+
+            repo.addPost(post)
+    }
+    fun fetchPosts() {
+    repo.getPostsFromRemote(1,PAGE_SIZE)
+    }
+    fun deletePost(post:Post) {
 
         repo.deletePost(post)
     }
 
-    fun UpdatePost(post:Post) {
+    fun updatePost(post:Post) {
 
-        repo.EditPost(post)
+        repo.editPost(post)
     }
     fun getAddedCallback() :MutableLiveData<State>
     {
-        return PostAddedCallback
+        return repo.postAddedCallback
     }
     fun getUpdatedCallback() :MutableLiveData<State>
     {
-        return PostUpdatedCallback
+        return repo.postUpdatedCallback
     }
     fun getDeletedCallback() :MutableLiveData<State>
     {
-        return PostDeletedCallback
+        return repo.postDeletedCallback
     }
     override fun onCleared() {
         super.onCleared()

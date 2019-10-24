@@ -2,7 +2,7 @@
 
 buildscript {
     ext.versions = [
-            'minSdk'           : 16,
+            'minSdk'           : 24,
             'compileSdk'       : 28,
 
             'buildTools'       : '28.0.3',
@@ -62,6 +62,7 @@ buildscript {
             ],
             square    : [
                     'retrofit'         : "com.squareup.retrofit2:retrofit:${versions.retrofit}",
+                    'logger'           : "com.squareup.okhttp3:logging-interceptor:${versions.okhttp}",
                     'gsonConverter'    : "com.squareup.retrofit2:converter-gson:${versions.retrofit}",
                     'okhttp'           : "com.squareup.okhttp3:okhttp:${versions.okhttp}",
                     'picasso'          : "com.squareup.picasso:picasso:${versions.picasso}",

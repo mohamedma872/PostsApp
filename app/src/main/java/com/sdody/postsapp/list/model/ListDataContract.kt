@@ -1,6 +1,7 @@
 package com.sdody.postsapp.list.model
 
 import androidx.lifecycle.MutableLiveData
+import androidx.paging.DataSource
 import com.sdody.postsapp.commons.data.local.Post
 import com.sdody.postsapp.commons.networking.Outcome
 import com.sdody.postsapp.commons.networking.State
@@ -12,30 +13,34 @@ import io.reactivex.subjects.PublishSubject
 interface ListDataContract {
 
     interface Repository {
+        var listener: ((List<Post>)->Unit)?
         val postFetchOutcome: PublishSubject<Outcome<List<Post>>>
-        val PostAddedCallback:  MutableLiveData<State>
-        val PostUpdatedCallback:  MutableLiveData<State>
-        val PostDeletedCallback:  MutableLiveData<State>
-        fun getPosts()
+        val postAddedCallback:  MutableLiveData<State>
+        val postUpdatedCallback:  MutableLiveData<State>
+        val postDeletedCallback:  MutableLiveData<State>
+        fun getPostsFromRemote(page: Int,pageSize: Int)
+        fun getPostsLocal():Flowable<List<Post>>
+        fun allPosts(): DataSource.Factory<Int, Post>
         fun savedPosts( posts: List<Post>)
         fun deletePost( post: Post)
-        fun EditPost( post: Post)
-        fun AddPost( post: Post)
+        fun editPost( post: Post)
+        fun addPost( post: Post)
         fun handleError(error: Throwable)
     }
 
     interface Local {
         fun getPosts(): Flowable<List<Post>>
+        fun allPosts(): DataSource.Factory<Int, Post>
         fun savedPosts( posts: List<Post>)
         fun deletePost( post: Post)
-        fun EditPost( post: Post)
-        fun AddPost( post: Post)
+        fun editPost( post: Post)
+        fun addPost( post: Post)
     }
 
     interface Remote {
-        fun getPosts(): Single<List<Post>>
+        fun getPosts(page: Int,pageSize: Int):Single<List<Post>>
         fun deletePost( post: Post):Completable
-        fun EditPost( post: Post):Completable
-        fun AddPost( post: Post):Completable
+        fun editPost( post: Post):Completable
+        fun addPost( post: Post):Completable
     }
 }

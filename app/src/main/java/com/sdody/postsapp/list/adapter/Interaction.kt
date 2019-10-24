@@ -6,4 +6,10 @@ interface Interaction {
     fun postClicked(
         post: Post
     )
+    fun postEdit(
+        post:  Post?,position :Int
+    )
+    fun postDeleted(
+        post:  Post?,position :Int
+    )
 }

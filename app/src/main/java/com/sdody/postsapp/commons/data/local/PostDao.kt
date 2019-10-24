@@ -1,13 +1,16 @@
 package com.sdody.postsapp.commons.data.local
 
+import androidx.paging.DataSource
 import androidx.room.*
 import io.reactivex.Flowable
 
 
 @Dao
 interface PostDao {
-    @Query("SELECT userId, post.postId AS postId, post.postTitle AS postTitle ,post.postBody AS postBody FROM post")
+    @Query("SELECT * FROM post")
     fun getPosts(): Flowable<List<Post>>
+
+
 
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -22,6 +25,6 @@ interface PostDao {
     @Update(onConflict = OnConflictStrategy.REPLACE)
     fun update(post: Post)
 
-    @Query("SELECT * FROM post")
-    fun getAll(): Flowable<List<Post>>
+    @Query("SELECT * FROM post ORDER BY postId ASC")
+    fun alPosts(): DataSource.Factory<Int, Post>
 }
