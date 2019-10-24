@@ -48,14 +48,14 @@ class ListViewModel(private val repo: ListDataContract.Repository,
 
     fun getPosts() {
        if (postsOutcome.value == null)
-          repo.getPostsFromRemote(1,PAGE_SIZE)
+          repo.getPostsFromRemote(0,PAGE_SIZE)
     }
     fun addPost(post:Post) {
 
             repo.addPost(post)
     }
     fun fetchPosts() {
-    repo.getPostsFromRemote(1,PAGE_SIZE)
+    repo.getPostsFromRemote(0,PAGE_SIZE)
     }
     fun deletePost(post:Post) {
 
