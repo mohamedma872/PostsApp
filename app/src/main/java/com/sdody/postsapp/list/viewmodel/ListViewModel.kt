@@ -12,12 +12,15 @@ import com.sdody.postsapp.commons.networking.Outcome
 import com.sdody.postsapp.commons.networking.State
 import com.sdody.postsapp.constants.Constants.INITIAL_LOAD_SIZE_HINT
 import com.sdody.postsapp.constants.Constants.PAGE_SIZE
+import com.sdody.postsapp.list.di.PostDH
 import com.sdody.postsapp.list.model.ListDataContract
 
 import io.reactivex.disposables.CompositeDisposable
 
-class ListViewModel(private val repo: ListDataContract.Repository,
-                    private val compositeDisposable: CompositeDisposable) : ViewModel() {
+class ListViewModel(
+    private val repo: ListDataContract.Repository,
+    private val compositeDisposable: CompositeDisposable
+) : ViewModel() {
 
     //for load data on demand
     val postsOutcome: LiveData<Outcome<List<Post>>> by lazy {
@@ -27,6 +30,7 @@ class ListViewModel(private val repo: ListDataContract.Repository,
     //paging
     // var postsDataSourceFactory: PostsDataSourceFactory
     var postList: LiveData<PagedList<Post>>
+
     init {
 //        postsDataSourceFactory = PostsDataSourceFactory(repo)
 //        val config = PagedList.Config.Builder()
@@ -47,41 +51,45 @@ class ListViewModel(private val repo: ListDataContract.Repository,
 
 
     fun getPosts() {
-       if (postsOutcome.value == null)
-          repo.getPostsFromRemote(0,PAGE_SIZE)
+        if (postsOutcome.value == null)
+            repo.getPostsFromRemote(0, PAGE_SIZE)
     }
-    fun addPost(post:Post) {
 
-            repo.addPost(post)
+    fun addPost(post: Post) {
+
+        repo.addPost(post)
     }
+
     fun fetchPosts() {
-    repo.getPostsFromRemote(0,PAGE_SIZE)
+        repo.getPostsFromRemote(0, PAGE_SIZE)
     }
-    fun deletePost(post:Post) {
+
+    fun deletePost(post: Post) {
 
         repo.deletePost(post)
     }
 
-    fun updatePost(post:Post) {
+    fun updatePost(post: Post) {
 
         repo.editPost(post)
     }
-    fun getAddedCallback() :MutableLiveData<State>
-    {
+
+    fun getAddedCallback(): MutableLiveData<State> {
         return repo.postAddedCallback
     }
-    fun getUpdatedCallback() :MutableLiveData<State>
-    {
+
+    fun getUpdatedCallback(): MutableLiveData<State> {
         return repo.postUpdatedCallback
     }
-    fun getDeletedCallback() :MutableLiveData<State>
-    {
+
+    fun getDeletedCallback(): MutableLiveData<State> {
         return repo.postDeletedCallback
     }
+
     override fun onCleared() {
         super.onCleared()
         //clear the disposables when the viewmodel is cleared
         compositeDisposable.clear()
-        //PostDH.destroyListComponent()
+        PostDH.destroyListComponent()
     }
 }
