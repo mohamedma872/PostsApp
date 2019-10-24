@@ -16,8 +16,8 @@ import io.reactivex.subjects.PublishSubject
 class ListRepository(
 
 
-     val local: ListDataContract.Local,
-     val remote: ListDataContract.Remote,
+    val local: ListDataContract.Local,
+    val remote: ListDataContract.Remote,
     private val scheduler: Scheduler,
     private val compositeDisposable: CompositeDisposable
 ) : ListDataContract.Repository {
@@ -27,7 +27,7 @@ class ListRepository(
     override val postDeletedCallback: MutableLiveData<State> = MutableLiveData()
     override val postFetchOutcome: PublishSubject<Outcome<List<Post>>> =
         PublishSubject.create<Outcome<List<Post>>>()
-    override var listener: ((List<Post>)->Unit)? = null
+    override var listener: ((List<Post>) -> Unit)? = null
 
 
     override fun getPostsLocal(): Flowable<List<Post>> {
@@ -38,16 +38,14 @@ class ListRepository(
 
         remote.getPosts(page, pageSize).performOnBackOutOnMain(scheduler)
             .subscribe({ res ->
-if (res !=null)
-{
+                if (res != null) {
 
-    if (res.isNotEmpty())
-    {
-        listener?.invoke(res)
-        savedPosts(res)
-        getPostsFromRemote(page+pageSize,pageSize)
-    }
-}
+                    if (res.isNotEmpty()) {
+                        //listener?.invoke(res)
+                        savedPosts(res)
+                        getPostsFromRemote(page + pageSize, pageSize)
+                    }
+                }
 
             },
                 {
@@ -59,7 +57,7 @@ if (res !=null)
     }
 
     override fun allPosts(): DataSource.Factory<Int, Post> {
-       return local.allPosts()
+        return local.allPosts()
     }
 
     override fun savedPosts(posts: List<Post>) {
@@ -75,7 +73,7 @@ if (res !=null)
         }, {
 
             postDeletedCallback.postValue(State.ERROR)
-        }) .addTo(compositeDisposable)
+        }).addTo(compositeDisposable)
 
     }
 
@@ -83,7 +81,10 @@ if (res !=null)
         local.editPost(post)
         remote.editPost(post).performOnBackOutOnMain(scheduler).subscribe({
             postUpdatedCallback.postValue(State.DONE)
-        }, { postUpdatedCallback.postValue(State.ERROR) }) .addTo(compositeDisposable)
+            //to indicate that post is synced to server
+            post.issynced = true
+            local.editPost(post)
+        }, { postUpdatedCallback.postValue(State.ERROR) }).addTo(compositeDisposable)
 
     }
 
@@ -91,7 +92,10 @@ if (res !=null)
         local.addPost(post)
         remote.addPost(post).performOnBackOutOnMain(scheduler).subscribe({
             postAddedCallback.postValue(State.DONE)
-        }, { postAddedCallback.postValue(State.ERROR) }) .addTo(compositeDisposable)
+            //to indicate that post is synced to server
+            post.issynced = true
+            local.editPost(post)
+        }, { postAddedCallback.postValue(State.ERROR) }).addTo(compositeDisposable)
 
     }
 

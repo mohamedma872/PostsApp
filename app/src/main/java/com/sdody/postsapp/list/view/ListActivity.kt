@@ -181,7 +181,7 @@ class ListActivity : BaseActivity(), Interaction, View.OnClickListener {
             val tittle = mDialogView.tittle.text.toString()
             val body = mDialogView.body.text.toString()
             //set the input text in TextView
-            val post = Post(1, System.currentTimeMillis(), tittle, body)
+            val post = Post(1, System.currentTimeMillis(), tittle, body,false)
             viewModel.addPost(post)
         }
         //cancel button click of custom layout
@@ -232,7 +232,7 @@ class ListActivity : BaseActivity(), Interaction, View.OnClickListener {
             //set the input text in TextView
             if (post != null) {
 
-                val localpost = Post(1, post.postId, tittle, body)
+                val localpost = Post(1, post.postId, tittle, body,false)
                 viewModel.updatePost(localpost)
                 adapter.updateItem(localpost, position)
             }
