@@ -11,7 +11,7 @@ class ListRemoteData(private val postService: PostService) : ListDataContract.Re
     }
 
     override fun editPost(post: Post):Completable {
-       return postService.updatePost(post.postId,post)
+       return postService.updatePost(post.postId!!,post)
     }
 
     override fun addPost(post: Post):Completable {
@@ -19,7 +19,7 @@ class ListRemoteData(private val postService: PostService) : ListDataContract.Re
     }
 
     override fun deletePost(post: Post):Completable {
-        return  postService.deletePost(post.postId)
+        return  postService.deletePost(post.postId!!)
     }
 
 

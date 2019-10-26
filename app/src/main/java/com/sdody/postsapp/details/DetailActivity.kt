@@ -9,9 +9,18 @@ class DetailActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail)
-        var tittletxt: String = intent.getStringExtra("tittle")
-        var bodytxt: String = intent.getStringExtra("body")
-        tittle.setText(tittletxt)
-        body.setText(bodytxt)
+
+        if (intent.hasExtra("tittle")) {
+            if (!(intent.getStringExtra("tittle")).isNullOrEmpty()) {
+                var tittletxt: String = intent.getStringExtra("tittle")
+                tittle.text = tittletxt
+            }
+        }
+        if (intent.hasExtra("body")) {
+            if (!(intent.getStringExtra("body")).isNullOrEmpty()) {
+                var bodytxt: String = intent.getStringExtra("body")
+                body.text = bodytxt
+            }
+        }
     }
 }

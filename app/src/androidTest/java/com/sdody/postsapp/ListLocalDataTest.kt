@@ -13,6 +13,9 @@ import com.sdody.postsapp.commons.testing.DummyData
 import com.sdody.postsapp.commons.testing.TestScheduler
 import com.sdody.postsapp.commons.data.local.PostDb
 import com.sdody.postsapp.list.model.ListLocalData
+import org.hamcrest.CoreMatchers.equalTo
+import org.junit.Assert.*
+import java.io.IOException
 
 /**
  *
@@ -51,8 +54,7 @@ class ListLocalDataTest {
     fun testGetPosts() {
 
         postDb.postDao().insertall(dummyPosts)
-
-        listLocalData.getPosts().test().assertValue(dummyPosts)
+        assertThat( listLocalData.getPosts().get(0), equalTo(dummyPosts[0]))
     }
 
 
@@ -64,10 +66,29 @@ class ListLocalDataTest {
 
         listLocalData.savedPosts( dummyPosts)
         val posts = postDb.postDao().getPosts()
-        posts.test().assertNoErrors().assertValue(dummyPosts)
+        assertThat( posts.get(0), equalTo(dummyPosts[0]))
     }
+    @Test
+    fun DeletePost() {
+        //save posts in db
+        listLocalData.savedPosts( dummyPosts)
+        //get posts from db
+        val posts = postDb.postDao().getPosts()
+       //make sure that posts has been insertted in db
+        assertThat( posts.get(0), equalTo(dummyPosts[0]))
+        //delete post from db
+        listLocalData.deletePost(posts.get(0))
+        //get posts from db after delete post from db
+        val posts_afterdeletion = postDb.postDao().getPosts()
+        //the posts[0] should not equal to posts_afterdeletion.get(0)
+        assertNotEquals(posts.get(0), equalTo(posts_afterdeletion.get(0)))
+        //the size of the posts array should be greater than posts_afterdeletion.size
+        assertEquals(posts.size-1,posts_afterdeletion.size)
 
+
+    }
     @After
+    @Throws(IOException::class)
     fun clean() {
         postDb.close()
     }

@@ -3,7 +3,6 @@ package com.sdody.postsapp.list.view
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.Toast
@@ -13,24 +12,21 @@ import androidx.lifecycle.ViewModelProviders
 import com.sdody.postsapp.R
 import com.sdody.postsapp.application.BaseActivity
 import com.sdody.postsapp.commons.data.local.Post
-import com.sdody.postsapp.commons.networking.Outcome
 import com.sdody.postsapp.commons.networking.State
 import com.sdody.postsapp.details.DetailActivity
 import com.sdody.postsapp.list.adapter.Interaction
+import com.sdody.postsapp.list.adapter.PostAdapter
 import com.sdody.postsapp.list.adapter.PostListAdapter
 import com.sdody.postsapp.list.di.PostDH
 import com.sdody.postsapp.list.viewmodel.ListViewModel
 import com.sdody.postsapp.list.viewmodel.ListViewModelFactory
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.add_post.view.*
-import java.io.IOException
 import javax.inject.Inject
 
 class ListActivity : BaseActivity(), Interaction, View.OnClickListener {
 
-
     private val component by lazy { PostDH.listComponent() }
-
 
     @Inject
     lateinit var viewModelFactory: ListViewModelFactory
@@ -44,7 +40,6 @@ class ListActivity : BaseActivity(), Interaction, View.OnClickListener {
 
     private val context: Context by lazy { this }
 
-
     private val TAG = "ListActivity"
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,17 +48,33 @@ class ListActivity : BaseActivity(), Interaction, View.OnClickListener {
         component.inject(this)
         adapter.interaction = this
         rvPosts.adapter = adapter
+
         viewModel.fetchPosts()
         fab.setOnClickListener(this)
         initiateDataListener()
-
+        //sync posts
+        if(IsConnected())
+        {
+            Toast.makeText(
+                context,
+                "we will check now for any operation not sync like add / update",
+                Toast.LENGTH_LONG
+            ).show()
+            viewModel.getPostsNotSynced()
+        }else
+        {
+            Toast.makeText(
+                context,
+                "there is no internet connection",
+                Toast.LENGTH_LONG
+            ).show()
+        }
 
     }
 
     override fun onClick(v: View?) {
         showNewDialog()
     }
-
 
     private fun initiateDataListener() {
 
@@ -88,7 +99,7 @@ class ListActivity : BaseActivity(), Interaction, View.OnClickListener {
             if (state == State.ERROR) {
                 Toast.makeText(
                     context,
-                    "Adding fail",
+                    "Adding fail because of internet connection so we will store it and sync it when connected to internet",
                     Toast.LENGTH_LONG
                 ).show()
             }
@@ -107,7 +118,7 @@ class ListActivity : BaseActivity(), Interaction, View.OnClickListener {
             if (state == State.ERROR) {
                 Toast.makeText(
                     context,
-                    "Deleting fail",
+                    "deleting fail because of internet connection so we will store it and sync it when connected to internet",
                     Toast.LENGTH_LONG
                 ).show()
             }
@@ -126,40 +137,12 @@ class ListActivity : BaseActivity(), Interaction, View.OnClickListener {
             if (state == State.ERROR) {
                 Toast.makeText(
                     context,
-                    "Updating fail",
+                    "updating fail because of internet connection so we will store it and sync it when connected to internet",
                     Toast.LENGTH_LONG
                 ).show()
             }
         })
-//     viewModel.postsOutcome.observe(this, Observer<Outcome<List<Post>>> { outcome ->
-        //            Log.d(TAG, "initiateDataListener: $outcome")
-//            when (outcome) {
-//
-//                //is Outcome.Progress -> srlPosts.isRefreshing = outcome.loading
-//
-//                is Outcome.Success -> {
-//                    Log.d(TAG, "initiateDataListener: Successfully loaded data")
-//                    // adapter.submitList(outcome.data)
-//                }
-//
-//                is Outcome.Failure -> {
-//
-//                    if (outcome.e is IOException)
-//                        Toast.makeText(
-//                            context,
-//                            "Need internet to fetch latest posts!",
-//                            Toast.LENGTH_LONG
-//                        ).show()
-//                    else
-//                        Toast.makeText(
-//                            context,
-//                            "Failed to load posts. Please try again later.",
-//                            Toast.LENGTH_LONG
-//                        ).show()
-//                }
-//
-//            }
-//        })
+
     }
 
     private fun showNewDialog() {
@@ -182,8 +165,17 @@ class ListActivity : BaseActivity(), Interaction, View.OnClickListener {
             val tittle = mDialogView.tittle.text.toString()
             val body = mDialogView.body.text.toString()
             //set the input text in TextView
-            val post = Post(1, System.currentTimeMillis(), tittle, body, false)
-            viewModel.addPost(post)
+            if (tittle.isNullOrEmpty() || body.isNullOrEmpty()) {
+                Toast.makeText(
+                    context,
+                    "tittle or body cannot be empty",
+                    Toast.LENGTH_LONG
+                ).show()
+            } else {
+                val post = Post(1, System.currentTimeMillis(), tittle, body, false,1)
+                viewModel.addPost(post)
+            }
+
         }
         //cancel button click of custom layout
         mDialogView.dialogCancelBtn.setOnClickListener {
@@ -198,8 +190,10 @@ class ListActivity : BaseActivity(), Interaction, View.OnClickListener {
         dialogBuilder.setMessage("Confirm delete?")
         dialogBuilder.setPositiveButton("Delete") { dialog, whichButton ->
             if (post != null) {
+               // adapter.deleteItem(position)
                 viewModel.deletePost(post)
-                adapter.deleteItem(position)
+               // adapter.notifyItemRemoved(position)
+
             }
         }
         dialogBuilder.setNegativeButton("Cancel") { dialog, whichButton ->
@@ -231,12 +225,21 @@ class ListActivity : BaseActivity(), Interaction, View.OnClickListener {
             val tittle = mDialogView.tittle.text.toString()
             val body = mDialogView.body.text.toString()
             //set the input text in TextView
-            if (post != null) {
 
-                val localpost = Post(1, post.postId, tittle, body, false)
-                viewModel.updatePost(localpost)
-                adapter.updateItem(localpost, position)
+            if (tittle.isNullOrEmpty() || body.isNullOrEmpty()) {
+                Toast.makeText(
+                    context,
+                    "tittle or body cannot be empty",
+                    Toast.LENGTH_LONG
+                ).show()
+            } else {
+                if (post != null) {
+
+                    val localpost = Post(1, post.postId, tittle, body, false,2)
+                    viewModel.updatePost(localpost)
+                }
             }
+
 
         }
         //cancel button click of custom layout

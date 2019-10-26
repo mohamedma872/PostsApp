@@ -7,8 +7,13 @@ import com.sdody.postsapp.commons.extensions.performOnBack
 import com.sdody.postsapp.commons.networking.Scheduler
 import io.reactivex.Completable
 import io.reactivex.Flowable
+import io.reactivex.Single
 
 class ListLocalData(private val postDb: PostDb, private val scheduler: Scheduler) : ListDataContract.Local {
+    override fun getPostsNotSynced(): Single<List<Post>> {
+        return  postDb.postDao().getPostsNotSynced()
+    }
+
     override fun allPosts(): DataSource.Factory<Int, Post> {
       return  postDb.postDao().alPosts()
     }
@@ -22,10 +27,10 @@ class ListLocalData(private val postDb: PostDb, private val scheduler: Scheduler
     }
 
     override fun deletePost(post: Post) {
-        postDb.postDao().delete(post)
+        postDb.postDao().delete(post.postId!!)
     }
 
-    override fun getPosts(): Flowable<List<Post>> {
+    override fun getPosts(): List<Post> {
         return postDb.postDao().getPosts()
     }
 

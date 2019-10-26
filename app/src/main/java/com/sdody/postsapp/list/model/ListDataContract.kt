@@ -19,22 +19,24 @@ interface ListDataContract {
         val postUpdatedCallback:  MutableLiveData<State>
         val postDeletedCallback:  MutableLiveData<State>
         fun getPostsFromRemote(page: Int,pageSize: Int)
-        fun getPostsLocal():Flowable<List<Post>>
+        fun getPostsLocal():List<Post>
         fun allPosts(): DataSource.Factory<Int, Post>
         fun savedPosts( posts: List<Post>)
         fun deletePost( post: Post)
         fun editPost( post: Post)
         fun addPost( post: Post)
         fun handleError(error: Throwable)
+        fun getPostsNotSynced()
     }
 
     interface Local {
-        fun getPosts(): Flowable<List<Post>>
+        fun getPosts(): List<Post>
         fun allPosts(): DataSource.Factory<Int, Post>
         fun savedPosts( posts: List<Post>)
         fun deletePost( post: Post)
         fun editPost( post: Post)
         fun addPost( post: Post)
+        fun getPostsNotSynced(): Single<List<Post>>
     }
 
     interface Remote {

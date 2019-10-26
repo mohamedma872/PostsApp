@@ -1,19 +1,12 @@
 package com.sdody.postsapp
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.Observer
-import androidx.paging.DataSource
-import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
-import com.nhaarman.mockito_kotlin.doReturn
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.verify
-import com.nhaarman.mockito_kotlin.whenever
 import com.sdody.postsapp.commons.data.local.Post
-import com.sdody.postsapp.constants.Constants
 import com.sdody.postsapp.list.model.ListDataContract
 import com.sdody.postsapp.list.viewmodel.ListViewModel
-import io.reactivex.Single
 import io.reactivex.disposables.CompositeDisposable
 import org.junit.Before
 import org.junit.Test
@@ -55,21 +48,21 @@ class ListViewModelTest {
 
     @Test
     fun addPost() {
-        val post = Post(11111, 12, "testtittle", "testbody", false)
+        val post = Post(11111, 12, "testtittle", "testbody", false,1)
         viewModel.addPost(post)
         verify(repo).addPost(post)
     }
 
     @Test
     fun editPost() {
-        val post = Post(1, 1, "testtittle", "testbody", false)
+        val post = Post(1, 1, "testtittle", "testbody", false,2)
         viewModel.updatePost(post)
         verify(repo).editPost(post)
     }
 
     @Test
     fun deletePost() {
-        val post = Post(1, 1, "testtittle", "testbody", false)
+        val post = Post(1, 1, "testtittle", "testbody", false,3)
         viewModel.deletePost(post)
         verify(repo).deletePost(post)
     }

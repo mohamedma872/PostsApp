@@ -3,14 +3,13 @@ package com.sdody.postsapp.commons.data.local
 import androidx.paging.DataSource
 import androidx.room.*
 import io.reactivex.Flowable
+import io.reactivex.Single
 
 
 @Dao
 interface PostDao {
     @Query("SELECT * FROM post")
-    fun getPosts(): Flowable<List<Post>>
-
-
+    fun getPosts(): List<Post>
 
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -19,12 +18,16 @@ interface PostDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(posts: Post)
 
-    @Delete
-    fun delete(post: Post)
+    @Query("DELETE from post where postId = :id")
+    fun delete(id: Long)
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
     fun update(post: Post)
 
-    @Query("SELECT * FROM post ORDER BY postId ASC")
+    @Query("SELECT * FROM post   ORDER BY postId ASC")
     fun alPosts(): DataSource.Factory<Int, Post>
+
+
+    @Query("SELECT * FROM  post where issynced = 0")
+    fun getPostsNotSynced(): Single<List<Post>>
 }

@@ -63,7 +63,7 @@ class PostServiceTest {
     @Test
     fun addPost()
     {
-        val post = Post(1111,111111111111111111,"testtittle","testbody",false)
+        val post = Post(1111,1,"testtittle","testbody",false,1)
         postService.addPost(post).test().run {
             assertNoErrors()
 
@@ -73,8 +73,8 @@ class PostServiceTest {
     @Test
     fun editPost()
     {
-        val post = Post(1,1,"testtittle","testbody",false)
-        postService.updatePost(post.postId,post).test().run {
+        val post = Post(1,1,"testtittle","testbody",false,2)
+        postService.updatePost(post.postId!!,post).test().run {
             assertNoErrors()
 
         }

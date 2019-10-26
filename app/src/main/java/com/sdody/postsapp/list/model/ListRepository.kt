@@ -1,6 +1,7 @@
 package com.sdody.postsapp.list.model
 
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.DataSource
 import com.sdody.postsapp.commons.data.local.Post
@@ -11,6 +12,7 @@ import com.sdody.postsapp.commons.networking.State
 import io.reactivex.Flowable
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.subjects.PublishSubject
+import java.util.concurrent.TimeUnit
 
 
 class ListRepository(
@@ -22,16 +24,57 @@ class ListRepository(
     private val compositeDisposable: CompositeDisposable
 ) : ListDataContract.Repository {
 
+
     override val postAddedCallback: MutableLiveData<State> = MutableLiveData()
     override val postUpdatedCallback: MutableLiveData<State> = MutableLiveData()
     override val postDeletedCallback: MutableLiveData<State> = MutableLiveData()
-//    override val postFetchOutcome: PublishSubject<Outcome<List<Post>>> =
-//        PublishSubject.create<Outcome<List<Post>>>()
+
     override var listener: ((List<Post>) -> Unit)? = null
 
 
-    override fun getPostsLocal(): Flowable<List<Post>> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun getPostsLocal(): List<Post> {
+        return local.getPosts()
+    }
+
+    override fun getPostsNotSynced() {
+        // operation type 0 for default
+        try {
+            local.getPostsNotSynced()
+                .performOnBackOutOnMain(scheduler)
+                .subscribe({ posts ->
+                    if(posts.isNotEmpty())
+                    {
+                        for (post in posts) {
+                            if (post.opertaionType == 1) {
+                                // operation type 1 for insert new post
+                                remote.addPost(post).performOnBackOutOnMain(scheduler).subscribe {
+                                    //to indicate that post is synced to server
+                                    post.issynced = true
+                                    local.editPost(post)
+                                }.addTo(compositeDisposable)
+                            }
+                            if (post.opertaionType == 2) {
+                                // operation type 2 for update new post
+                                remote.editPost(post).performOnBackOutOnMain(scheduler).subscribe {
+                                    //to indicate that post is synced to server
+                                    post.issynced = true
+                                    local.editPost(post)
+                                }.addTo(compositeDisposable)
+                            }
+//                            if (post.opertaionType == 3) {
+//                                // operation type 3 for delete new post
+//                                deletePost(post)
+//                            }
+                        }
+                    }
+
+                }, { error -> handleError(error) })
+                .addTo(compositeDisposable)
+        }catch (ex:Exception)
+        {
+            Log.e("getPostsNotSynced",ex.message)
+        }
+
     }
 
     override fun getPostsFromRemote(page: Int, pageSize: Int) {
@@ -61,17 +104,22 @@ class ListRepository(
     }
 
     override fun savedPosts(posts: List<Post>) {
+
+        posts.forEach { e -> e.issynced = true }
         local.savedPosts(posts)
     }
 
     override fun deletePost(post: Post) {
-        local.deletePost(post)
         remote.deletePost(post).performOnBackOutOnMain(scheduler).subscribe({
-
+            local.deletePost(post)
             postDeletedCallback.postValue(State.DONE)
 
         }, {
-
+            //to update post in db that is not synced
+            post.issynced = false
+            post.opertaionType = 3
+            local.editPost(post)
+            //push updates to UI
             postDeletedCallback.postValue(State.ERROR)
         }).addTo(compositeDisposable)
 
@@ -100,7 +148,7 @@ class ListRepository(
     }
 
     override fun handleError(error: Throwable) {
-      //  postFetchOutcome.failed(error)
+        //  postFetchOutcome.failed(error)
     }
 
 }

@@ -19,8 +19,6 @@ import javax.inject.Singleton
 class NetworkModule {
 
 
-
-
     @Provides
     @Singleton
     fun providesRetrofit(
@@ -46,10 +44,10 @@ class NetworkModule {
             .writeTimeout(30, TimeUnit.SECONDS)
             .readTimeout(10, TimeUnit.SECONDS)
             .addInterceptor(HttpLoggingInterceptor().apply {
-                level = if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BODY else HttpLoggingInterceptor.Level.NONE
+                level =
+                    if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BODY else HttpLoggingInterceptor.Level.NONE
             })
-//        if (BuildConfig.DEBUG)
-//            client.addNetworkInterceptor(StethoInterceptor())
+
 
         return client.build()
     }

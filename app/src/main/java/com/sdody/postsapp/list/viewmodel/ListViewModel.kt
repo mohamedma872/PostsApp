@@ -7,8 +7,6 @@ import androidx.paging.DataSource
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import com.sdody.postsapp.commons.data.local.Post
-import com.sdody.postsapp.commons.extensions.toLiveData
-import com.sdody.postsapp.commons.networking.Outcome
 import com.sdody.postsapp.commons.networking.State
 import com.sdody.postsapp.constants.Constants.INITIAL_LOAD_SIZE_HINT
 import com.sdody.postsapp.constants.Constants.PAGE_SIZE
@@ -36,12 +34,15 @@ class ListViewModel(
                 .setInitialLoadSizeHint(INITIAL_LOAD_SIZE_HINT)
                 .setEnablePlaceholders(false)
                 .build()
-            postList = LivePagedListBuilder(factory, config).build()
+            postList = LivePagedListBuilder(repo.allPosts(), config).build()
         }
+
 
     }
 
-
+    fun getPostsNotSynced() {
+        repo.getPostsNotSynced()
+    }
     fun addPost(post: Post) {
 
         repo.addPost(post)

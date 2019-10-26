@@ -1,5 +1,6 @@
 package com.sdody.postsapp.list.adapter
 
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import androidx.paging.PagedListAdapter
@@ -22,15 +23,21 @@ class PostListAdapter
         (holder as PostViewHolder).bind(getItem(position))
 
         holder.itemView.btnDelete.setOnClickListener {
+            val ID= getItem(position)!!.postId
+            val tittle = getItem(position)!!.postTitle
+            Log.e("btnDelete","pos $position postID $ID  posttittle $tittle")
             interaction?.postDeleted(
                 getItem(position),
-                position
+                holder.itemView.tag as Int
             )
         }
         holder.itemView.btnEdit.setOnClickListener {
+            val ID= getItem(position)!!.postId
+            val tittle = getItem(position)!!.postTitle
+            Log.e("btnEdit","pos $position postID $ID  posttittle $tittle")
             interaction?.postEdit(
                 getItem(position),
-                position
+                holder.itemView.tag as Int
             )
         }
         holder.itemView.setOnClickListener(this)

@@ -13,8 +13,7 @@ class PostViewHolder(view: View) : RecyclerView.ViewHolder(view)  {
 
     fun bind(post: Post?) {
         if (post != null) {
-            //itemView.txt_news_name.text = news.title
-            itemView.tittle.text = post.postTitle
+            itemView.tittle.text = post.postTitle + " "+post.postId
         }
     }
 

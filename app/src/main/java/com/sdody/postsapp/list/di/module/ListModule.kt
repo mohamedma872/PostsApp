@@ -23,6 +23,8 @@ import retrofit2.Retrofit
 class ListModule {
 
 
+
+
     /*Adapter*/
     @Provides
     @ListScope
@@ -34,16 +36,6 @@ class ListModule {
     @ListScope
     fun providelistViewModelFactory(repository: ListDataContract.Repository, compositeDisposable: CompositeDisposable): ListViewModelFactory = ListViewModelFactory(repository,compositeDisposable)
 
-//    /*paging*/
-//    @Provides
-//    @ListScope
-//    fun providesPostsDataSourceFactory(scheduler: Scheduler,postService: PostService, compositeDisposable: CompositeDisposable): PostsDataSourceFactory = PostsDataSourceFactory(scheduler,postService, compositeDisposable)
-//
-//
-//    @Provides
-//    @ListScope
-//    fun providesPostsDataSource(scheduler: Scheduler,postService: PostService, compositeDisposable: CompositeDisposable): PostsDataSource = PostsDataSource(scheduler,postService, compositeDisposable)
-//
 
     /*Repository*/
     @Provides
