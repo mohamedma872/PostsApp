@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 
 @Entity
-data class Post(@SerializedName("userId") val userId: Int,
+data class Post(@SerializedName("userId") val userId: Long,
                 @SerializedName("id") @PrimaryKey val postId: Long,
                 @SerializedName("title") val postTitle: String,
                 @SerializedName("body") val postBody: String, var issynced: Boolean)

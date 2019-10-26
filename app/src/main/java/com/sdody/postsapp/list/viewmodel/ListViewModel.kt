@@ -22,38 +22,25 @@ class ListViewModel(
     private val compositeDisposable: CompositeDisposable
 ) : ViewModel() {
 
-    //for load data on demand
-    val postsOutcome: LiveData<Outcome<List<Post>>> by lazy {
-        //Convert publish subject to livedata
-        repo.postFetchOutcome.toLiveData(compositeDisposable)
-    }
     //paging
-    // var postsDataSourceFactory: PostsDataSourceFactory
-    var postList: LiveData<PagedList<Post>>
+    lateinit var postList: LiveData<PagedList<Post>>
+
 
     init {
-//        postsDataSourceFactory = PostsDataSourceFactory(repo)
-//        val config = PagedList.Config.Builder()
-//            .setPageSize(PAGE_SIZE)
-//            .setInitialLoadSizeHint(INITIAL_LOAD_SIZE_HINT)
-//            .setEnablePlaceholders(false)
-//            .build()
-//        postList = LivePagedListBuilder(postsDataSourceFactory, config).build()
 
         val factory: DataSource.Factory<Int, Post> = repo.allPosts()
-        val config = PagedList.Config.Builder()
-            .setPageSize(PAGE_SIZE)
-            .setInitialLoadSizeHint(INITIAL_LOAD_SIZE_HINT)
-            .setEnablePlaceholders(false)
-            .build()
-        postList = LivePagedListBuilder(factory, config).build()
+        if (factory!=null)
+        {
+            val config = PagedList.Config.Builder()
+                .setPageSize(PAGE_SIZE)
+                .setInitialLoadSizeHint(INITIAL_LOAD_SIZE_HINT)
+                .setEnablePlaceholders(false)
+                .build()
+            postList = LivePagedListBuilder(factory, config).build()
+        }
+
     }
 
-
-    fun getPosts() {
-        if (postsOutcome.value == null)
-            repo.getPostsFromRemote(0, PAGE_SIZE)
-    }
 
     fun addPost(post: Post) {
 

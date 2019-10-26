@@ -73,39 +73,11 @@ class ListActivity : BaseActivity(), Interaction, View.OnClickListener {
         })
         //Observe the outcome and update state of the screen  accordingly
         // i will use it when request data on demand
-        viewModel.postsOutcome.observe(this, Observer<Outcome<List<Post>>> { outcome ->
-            Log.d(TAG, "initiateDataListener: $outcome")
-            when (outcome) {
-
-                //is Outcome.Progress -> srlPosts.isRefreshing = outcome.loading
-
-                is Outcome.Success -> {
-                    Log.d(TAG, "initiateDataListener: Successfully loaded data")
-                    // adapter.submitList(outcome.data)
-                }
-
-                is Outcome.Failure -> {
-
-                    if (outcome.e is IOException)
-                        Toast.makeText(
-                            context,
-                            "Need internet to fetch latest posts!",
-                            Toast.LENGTH_LONG
-                        ).show()
-                    else
-                        Toast.makeText(
-                            context,
-                            "Failed to load posts. Please try again later.",
-                            Toast.LENGTH_LONG
-                        ).show()
-                }
+//
+        viewModel.getAddedCallback().observe(this, Observer<State> { state ->
+            if (state == State.LOADING) {
 
             }
-        })
-        viewModel.getAddedCallback().observe(this, Observer<State> { state ->
-            //            if (state == State.LOADING) {
-//
-//            }
             if (state == State.DONE) {
                 Toast.makeText(
                     context,
@@ -122,9 +94,9 @@ class ListActivity : BaseActivity(), Interaction, View.OnClickListener {
             }
         })
         viewModel.getDeletedCallback().observe(this, Observer<State> { state ->
-            //            if (state == State.LOADING) {
-//
-//            }
+            if (state == State.LOADING) {
+
+            }
             if (state == State.DONE) {
                 Toast.makeText(
                     context,
@@ -141,9 +113,9 @@ class ListActivity : BaseActivity(), Interaction, View.OnClickListener {
             }
         })
         viewModel.getUpdatedCallback().observe(this, Observer<State> { state ->
-            //            if (state == State.LOADING) {
-//
-//            }
+            if (state == State.LOADING) {
+
+            }
             if (state == State.DONE) {
                 Toast.makeText(
                     context,
@@ -159,6 +131,35 @@ class ListActivity : BaseActivity(), Interaction, View.OnClickListener {
                 ).show()
             }
         })
+//     viewModel.postsOutcome.observe(this, Observer<Outcome<List<Post>>> { outcome ->
+        //            Log.d(TAG, "initiateDataListener: $outcome")
+//            when (outcome) {
+//
+//                //is Outcome.Progress -> srlPosts.isRefreshing = outcome.loading
+//
+//                is Outcome.Success -> {
+//                    Log.d(TAG, "initiateDataListener: Successfully loaded data")
+//                    // adapter.submitList(outcome.data)
+//                }
+//
+//                is Outcome.Failure -> {
+//
+//                    if (outcome.e is IOException)
+//                        Toast.makeText(
+//                            context,
+//                            "Need internet to fetch latest posts!",
+//                            Toast.LENGTH_LONG
+//                        ).show()
+//                    else
+//                        Toast.makeText(
+//                            context,
+//                            "Failed to load posts. Please try again later.",
+//                            Toast.LENGTH_LONG
+//                        ).show()
+//                }
+//
+//            }
+//        })
     }
 
     private fun showNewDialog() {
@@ -181,7 +182,7 @@ class ListActivity : BaseActivity(), Interaction, View.OnClickListener {
             val tittle = mDialogView.tittle.text.toString()
             val body = mDialogView.body.text.toString()
             //set the input text in TextView
-            val post = Post(1, System.currentTimeMillis(), tittle, body,false)
+            val post = Post(1, System.currentTimeMillis(), tittle, body, false)
             viewModel.addPost(post)
         }
         //cancel button click of custom layout
@@ -232,7 +233,7 @@ class ListActivity : BaseActivity(), Interaction, View.OnClickListener {
             //set the input text in TextView
             if (post != null) {
 
-                val localpost = Post(1, post.postId, tittle, body,false)
+                val localpost = Post(1, post.postId, tittle, body, false)
                 viewModel.updatePost(localpost)
                 adapter.updateItem(localpost, position)
             }

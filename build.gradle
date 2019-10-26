@@ -14,16 +14,13 @@ buildscript {
             'retrofit'         : '2.3.0',
             'retrofitRxAdapter': '1.0.0',
             'okhttp'           : '3.9.0',
-            'okhttpDownloader' : '1.1.0',
-            'picasso'          : '2.5.2',
             'rxJava'           : '2.1.7',
             'rxAndroid'        : '2.0.1',
             'jodaTime'         : "2.9.9",
-            'stetho'           : '1.5.0',
             'junit'            : '4.12',
             'atsl'             : '1.0.1',
             'mockitoKotlin'    : '1.5.0',
-            'robolectric'      : '4.3',
+            'robolectric'      : '4.3.1',
             'sourceCompat'     : JavaVersion.VERSION_1_8,
             'targetCompat'     : JavaVersion.VERSION_1_8
     ]
@@ -65,8 +62,6 @@ buildscript {
                     'logger'           : "com.squareup.okhttp3:logging-interceptor:${versions.okhttp}",
                     'gsonConverter'    : "com.squareup.retrofit2:converter-gson:${versions.retrofit}",
                     'okhttp'           : "com.squareup.okhttp3:okhttp:${versions.okhttp}",
-                    'picasso'          : "com.squareup.picasso:picasso:${versions.picasso}",
-                    'okhttpDownloader' : "com.jakewharton.picasso:picasso2-okhttp3-downloader:${versions.okhttpDownloader}",
                     'retrofitRxAdapter': "com.jakewharton.retrofit:retrofit2-rxjava2-adapter:${versions.retrofitRxAdapter}",
             ],
 

@@ -25,8 +25,8 @@ class ListRepository(
     override val postAddedCallback: MutableLiveData<State> = MutableLiveData()
     override val postUpdatedCallback: MutableLiveData<State> = MutableLiveData()
     override val postDeletedCallback: MutableLiveData<State> = MutableLiveData()
-    override val postFetchOutcome: PublishSubject<Outcome<List<Post>>> =
-        PublishSubject.create<Outcome<List<Post>>>()
+//    override val postFetchOutcome: PublishSubject<Outcome<List<Post>>> =
+//        PublishSubject.create<Outcome<List<Post>>>()
     override var listener: ((List<Post>) -> Unit)? = null
 
 
@@ -100,7 +100,7 @@ class ListRepository(
     }
 
     override fun handleError(error: Throwable) {
-        postFetchOutcome.failed(error)
+      //  postFetchOutcome.failed(error)
     }
 
 }

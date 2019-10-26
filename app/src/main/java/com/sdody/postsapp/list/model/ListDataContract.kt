@@ -14,7 +14,7 @@ interface ListDataContract {
 
     interface Repository {
         var listener: ((List<Post>)->Unit)?
-        val postFetchOutcome: PublishSubject<Outcome<List<Post>>>
+       // val postFetchOutcome: PublishSubject<Outcome<List<Post>>>
         val postAddedCallback:  MutableLiveData<State>
         val postUpdatedCallback:  MutableLiveData<State>
         val postDeletedCallback:  MutableLiveData<State>

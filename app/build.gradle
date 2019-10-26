@@ -65,8 +65,7 @@ dependencies {
     kapt deps.google.daggerProcessor
     api deps.google.gson
 
-    api deps.square.picasso
-    api deps.square.okhttpDownloader
+
 
     api deps.square.retrofit
     api deps.square.logger
