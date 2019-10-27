@@ -10,7 +10,7 @@ import com.sdody.postsapp.commons.data.local.Post
 import kotlinx.android.synthetic.main.list_item.view.*
 
 class PostListAdapter
-    : PagedListAdapter<Post, RecyclerView.ViewHolder>(NewsDiffCallback), View.OnClickListener {
+    : PagedListAdapter<Post, RecyclerView.ViewHolder>(NewsDiffCallback) {
 
     var interaction: Interaction? = null
 
@@ -23,25 +23,25 @@ class PostListAdapter
         (holder as PostViewHolder).bind(getItem(position))
 
         holder.itemView.btnDelete.setOnClickListener {
-            val ID= getItem(position)!!.postId
-            val tittle = getItem(position)!!.postTitle
-            Log.e("btnDelete","pos $position postID $ID  posttittle $tittle")
             interaction?.postDeleted(
                 getItem(position),
-                holder.itemView.tag as Int,holder
+                holder.itemView.tag as Int, holder
             )
 
         }
         holder.itemView.btnEdit.setOnClickListener {
-            val ID= getItem(position)!!.postId
-            val tittle = getItem(position)!!.postTitle
-            Log.e("btnEdit","pos $position postID $ID  posttittle $tittle")
             interaction?.postEdit(
                 getItem(position),
-                holder.itemView.tag as Int
+                holder.itemView.tag as Int, holder
             )
         }
-        holder.itemView.setOnClickListener(this)
+        holder.itemView.setOnClickListener {
+
+            interaction?.postClicked(
+
+                holder
+            )
+        }
     }
 
     companion object {
@@ -55,26 +55,14 @@ class PostListAdapter
             }
         }
     }
+
     fun getElementItem(position: Int): Post {
         return getItem(position)!!
     }
+
     override fun getItemCount(): Int {
         return super.getItemCount() + 0
     }
 
-    override fun onClick(v: View?) {
-        val clicked = getItem(v!!.tag as Int)
-        if (clicked != null) {
-            interaction?.postClicked(clicked)
-        }
-    }
-
-    fun updateItem(post: Post?, position: Int) {
-        this.notifyItemChanged(position, post)
-    }
-
-    fun deleteItem(position: Int) {
-        this.notifyItemRemoved(position)
-    }
 
 }

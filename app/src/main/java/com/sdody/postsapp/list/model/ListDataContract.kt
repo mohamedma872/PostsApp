@@ -23,7 +23,7 @@ interface ListDataContract {
         fun getPostsLocal():List<Post>
         fun allPosts(): DataSource.Factory<Int, Post>
         fun savedPosts( posts: List<Post>)
-        suspend  fun deletePost( post: Post)
+        fun deletePost( post: Post)
         fun editPost( post: Post)
         fun addPost( post: Post)
         fun handleError(error: Throwable)

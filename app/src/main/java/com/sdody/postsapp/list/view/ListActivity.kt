@@ -249,15 +249,15 @@ class ListActivity : BaseActivity(), Interaction, View.OnClickListener {
         }
     }
 
-    override fun postClicked(post: Post) {
+    override fun postClicked(holder: PostViewHolder) {
         val intent = Intent(this, DetailActivity::class.java)
-        intent.putExtra("tittle", post.postTitle)
-        intent.putExtra("body", post.postBody)
+        intent.putExtra("tittle", adapter.getElementItem(holder.adapterPosition).postTitle)
+        intent.putExtra("body", adapter.getElementItem(holder.adapterPosition).postBody)
         startActivity(intent)
     }
 
-    override fun postEdit(post: Post?, position: Int) {
-        showUpdateDialog(position, post)
+    override fun postEdit(post: Post?, position: Int,holder: PostViewHolder) {
+        showUpdateDialog(position, adapter.getElementItem(holder.adapterPosition))
     }
 
     override fun postDeleted(post: Post?, position: Int,holder: PostViewHolder) {

@@ -94,6 +94,5 @@ dependencies {
     androidTestImplementation deps.test.roomTesting
     androidTestImplementation deps.test.livedataTesting
     implementation 'androidx.paging:paging-runtime-ktx:2.1.0'
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.1.0'
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.1.0'
+
 }

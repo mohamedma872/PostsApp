@@ -6,16 +6,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.paging.DataSource
 import com.sdody.postsapp.commons.data.local.Post
 import com.sdody.postsapp.commons.extensions.*
-import com.sdody.postsapp.commons.networking.Outcome
 import com.sdody.postsapp.commons.networking.Scheduler
 import com.sdody.postsapp.commons.networking.State
-import io.reactivex.Flowable
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.subjects.PublishSubject
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
-import java.util.concurrent.TimeUnit
-
 
 class ListRepository(
 
@@ -69,7 +62,7 @@ class ListRepository(
                             }
                             if (post.opertaionType == 3) {
                                 // operation type 3 for delete new post
-                                //deletePost(post)
+                               deletePost(post)
                             }
                         }
                     }
@@ -115,15 +108,12 @@ class ListRepository(
         local.savedPosts(posts)
     }
 
-    override suspend fun deletePost(post: Post) {
-
-        withContext(Dispatchers.IO) {
-            local.deletePost(post)
+    override  fun deletePost(post: Post) {
             post.issynced = false
             post.opertaionType = 3
             local.editPost(post)
             remote.deletePost(post).performOnBackOutOnMain(scheduler).subscribe({
-                //local.deletePost(post)
+                local.deletePost(post)
 
                 postDeletedCallback.postValue(State.DONE)
 
@@ -134,7 +124,7 @@ class ListRepository(
                 local.editPost(post)
                 //push updates to UI
                 postDeletedCallback.postValue(State.ERROR)
-            }).addTo(compositeDisposable)        }
+            }).addTo(compositeDisposable)
 
 
     }
