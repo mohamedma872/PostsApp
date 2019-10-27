@@ -2,7 +2,6 @@ package com.sdody.postsapp.commons.data.local
 
 import androidx.paging.DataSource
 import androidx.room.*
-import io.reactivex.Flowable
 import io.reactivex.Single
 
 
@@ -24,7 +23,7 @@ interface PostDao {
     @Update(onConflict = OnConflictStrategy.REPLACE)
     fun update(post: Post)
 
-    @Query("SELECT * FROM post   ORDER BY postId ASC")
+    @Query("SELECT * FROM post where opertaionType != 3  ORDER BY postId ASC")
     fun alPosts(): DataSource.Factory<Int, Post>
 
 

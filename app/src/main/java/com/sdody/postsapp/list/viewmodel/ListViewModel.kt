@@ -35,6 +35,7 @@ class ListViewModel(
                 .setEnablePlaceholders(false)
                 .build()
             postList = LivePagedListBuilder(repo.allPosts(), config).build()
+
         }
 
 
