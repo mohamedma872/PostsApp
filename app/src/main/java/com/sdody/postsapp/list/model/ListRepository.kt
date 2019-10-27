@@ -12,6 +12,8 @@ import com.sdody.postsapp.commons.networking.State
 import io.reactivex.Flowable
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.subjects.PublishSubject
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import java.util.concurrent.TimeUnit
 
 
@@ -24,7 +26,11 @@ class ListRepository(
     private val compositeDisposable: CompositeDisposable
 ) : ListDataContract.Repository {
 
-
+    override val paginatedChatElements: DataSource.Factory<Int, Post> by lazy(
+        LazyThreadSafetyMode.NONE
+    ) {
+        allPosts()
+    }
     override val postAddedCallback: MutableLiveData<State> = MutableLiveData()
     override val postUpdatedCallback: MutableLiveData<State> = MutableLiveData()
     override val postDeletedCallback: MutableLiveData<State> = MutableLiveData()
@@ -61,10 +67,10 @@ class ListRepository(
                                     local.editPost(post)
                                 }.addTo(compositeDisposable)
                             }
-//                            if (post.opertaionType == 3) {
-//                                // operation type 3 for delete new post
-//                                deletePost(post)
-//                            }
+                            if (post.opertaionType == 3) {
+                                // operation type 3 for delete new post
+                                //deletePost(post)
+                            }
                         }
                     }
 
@@ -109,19 +115,27 @@ class ListRepository(
         local.savedPosts(posts)
     }
 
-    override fun deletePost(post: Post) {
-        remote.deletePost(post).performOnBackOutOnMain(scheduler).subscribe({
-            local.deletePost(post)
-            postDeletedCallback.postValue(State.DONE)
+    override suspend fun deletePost(post: Post) {
 
-        }, {
-            //to update post in db that is not synced
+        withContext(Dispatchers.IO) {
+            local.deletePost(post)
             post.issynced = false
             post.opertaionType = 3
             local.editPost(post)
-            //push updates to UI
-            postDeletedCallback.postValue(State.ERROR)
-        }).addTo(compositeDisposable)
+            remote.deletePost(post).performOnBackOutOnMain(scheduler).subscribe({
+                //local.deletePost(post)
+
+                postDeletedCallback.postValue(State.DONE)
+
+            }, {
+                //to update post in db that is not synced
+                post.issynced = false
+                post.opertaionType = 3
+                local.editPost(post)
+                //push updates to UI
+                postDeletedCallback.postValue(State.ERROR)
+            }).addTo(compositeDisposable)        }
+
 
     }
 

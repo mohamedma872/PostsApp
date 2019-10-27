@@ -13,6 +13,7 @@ import io.reactivex.subjects.PublishSubject
 interface ListDataContract {
 
     interface Repository {
+        val paginatedChatElements: DataSource.Factory<Int, Post>
         var listener: ((List<Post>)->Unit)?
        // val postFetchOutcome: PublishSubject<Outcome<List<Post>>>
         val postAddedCallback:  MutableLiveData<State>
@@ -22,7 +23,7 @@ interface ListDataContract {
         fun getPostsLocal():List<Post>
         fun allPosts(): DataSource.Factory<Int, Post>
         fun savedPosts( posts: List<Post>)
-        fun deletePost( post: Post)
+        suspend  fun deletePost( post: Post)
         fun editPost( post: Post)
         fun addPost( post: Post)
         fun handleError(error: Throwable)

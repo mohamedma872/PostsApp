@@ -15,8 +15,8 @@ import com.sdody.postsapp.commons.data.local.Post
 import com.sdody.postsapp.commons.networking.State
 import com.sdody.postsapp.details.DetailActivity
 import com.sdody.postsapp.list.adapter.Interaction
-import com.sdody.postsapp.list.adapter.PostAdapter
 import com.sdody.postsapp.list.adapter.PostListAdapter
+import com.sdody.postsapp.list.adapter.PostViewHolder
 import com.sdody.postsapp.list.di.PostDH
 import com.sdody.postsapp.list.viewmodel.ListViewModel
 import com.sdody.postsapp.list.viewmodel.ListViewModelFactory
@@ -260,7 +260,7 @@ class ListActivity : BaseActivity(), Interaction, View.OnClickListener {
         showUpdateDialog(position, post)
     }
 
-    override fun postDeleted(post: Post?, position: Int) {
-        showDeleteDialog(position, post)
+    override fun postDeleted(post: Post?, position: Int,holder: PostViewHolder) {
+        showDeleteDialog(position, adapter.getElementItem(holder.adapterPosition))
     }
 }

@@ -10,6 +10,6 @@ interface Interaction {
         post:  Post?,position :Int
     )
     fun postDeleted(
-        post:  Post?,position :Int
+        post:  Post?,position :Int,holder:PostViewHolder
     )
 }

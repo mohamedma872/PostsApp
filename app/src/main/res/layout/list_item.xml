@@ -32,7 +32,6 @@
             android:layout_height="35dp"
             android:drawableLeft="@android:drawable/ic_delete"
             android:padding="5dp"
-            android:visibility="gone"
             android:drawableStart="@android:drawable/ic_delete" />
 
         <TextView

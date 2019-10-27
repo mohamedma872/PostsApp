@@ -28,8 +28,9 @@ class PostListAdapter
             Log.e("btnDelete","pos $position postID $ID  posttittle $tittle")
             interaction?.postDeleted(
                 getItem(position),
-                holder.itemView.tag as Int
+                holder.itemView.tag as Int,holder
             )
+
         }
         holder.itemView.btnEdit.setOnClickListener {
             val ID= getItem(position)!!.postId
@@ -45,16 +46,18 @@ class PostListAdapter
 
     companion object {
         val NewsDiffCallback = object : DiffUtil.ItemCallback<Post>() {
-            override fun areItemsTheSame(oldItem: Post, newItem: Post): Boolean {
-                return oldItem.postId == newItem.postId
-            }
-
             override fun areContentsTheSame(oldItem: Post, newItem: Post): Boolean {
                 return oldItem == newItem
             }
+
+            override fun areItemsTheSame(oldItem: Post, newItem: Post): Boolean {
+                return oldItem.postId == newItem.postId
+            }
         }
     }
-
+    fun getElementItem(position: Int): Post {
+        return getItem(position)!!
+    }
     override fun getItemCount(): Int {
         return super.getItemCount() + 0
     }

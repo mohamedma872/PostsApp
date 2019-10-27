@@ -3,6 +3,7 @@ package com.sdody.postsapp.list.di.module
 import android.content.Context
 import androidx.room.Room
 import com.sdody.postsapp.commons.data.local.PostDb
+import com.sdody.postsapp.commons.data.local.getDatabase
 import com.sdody.postsapp.commons.data.remote.PostService
 import com.sdody.postsapp.commons.networking.Scheduler
 import com.sdody.postsapp.constants.Constants
@@ -58,7 +59,10 @@ class ListModule {
     /*Parent providers to dependents*/
     @Provides
     @ListScope
-    fun providepostDb(context: Context): PostDb = Room.databaseBuilder(context, PostDb::class.java, Constants.Posts.DB_NAME).allowMainThreadQueries().build()
+    fun providepostDb(context: Context): PostDb
+        {
+            return getDatabase(context)
+        }
 
     @Provides
     @ListScope

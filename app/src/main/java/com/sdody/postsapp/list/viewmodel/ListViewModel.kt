@@ -14,6 +14,10 @@ import com.sdody.postsapp.list.di.PostDH
 import com.sdody.postsapp.list.model.ListDataContract
 
 import io.reactivex.disposables.CompositeDisposable
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 
 class ListViewModel(
     private val repo: ListDataContract.Repository,
@@ -21,18 +25,35 @@ class ListViewModel(
 ) : ViewModel() {
 
     //paging
-    lateinit var postList: LiveData<PagedList<Post>>
 
+    /**
+     * This is the job for all coroutines started by this ViewModel.
+     *
+     * Cancelling this job will cancel all coroutines started by this ViewModel.
+     */
+    private val viewModelJob = Job()
+
+    /**
+     * This is the main scope for all coroutines launched by MainViewModel.
+     *
+     * Since we pass viewModelJob, you can cancel all coroutines launched by uiScope by calling
+     * viewModelJob.cancel()
+     */
+    private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
+    private val paginatedChatElements = repo.paginatedChatElements
+
+    lateinit var postList: LiveData<PagedList<Post>>
+    var factory: DataSource.Factory<Int, Post>
 
     init {
 
-        val factory: DataSource.Factory<Int, Post> = repo.allPosts()
+         factory = paginatedChatElements
         if (factory!=null)
         {
             val config = PagedList.Config.Builder()
                 .setPageSize(PAGE_SIZE)
                 .setInitialLoadSizeHint(INITIAL_LOAD_SIZE_HINT)
-                .setEnablePlaceholders(false)
+                .setEnablePlaceholders(true)
                 .build()
             postList = LivePagedListBuilder(repo.allPosts(), config).build()
 
@@ -54,8 +75,9 @@ class ListViewModel(
     }
 
     fun deletePost(post: Post) {
-
-        repo.deletePost(post)
+        uiScope.launch {
+            repo.deletePost(post)
+        }
     }
 
     fun updatePost(post: Post) {
@@ -80,5 +102,12 @@ class ListViewModel(
         //clear the disposables when the viewmodel is cleared
         compositeDisposable.clear()
         PostDH.destroyListComponent()
+        viewModelJob.cancel()
+    }
+    fun invalidateDataSource() {
+
+       postList.value?.dataSource?.invalidate()
+
+
     }
 }
