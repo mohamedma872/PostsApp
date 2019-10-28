@@ -11,16 +11,16 @@ The App Features
 
 Libraries used:
 <ul>
-  <li>•	Android Support Libraries</li>
-•	Dagger 2
-•	Retrofit
-•	OkHttp
-•	Room
-•	ViewModel
-•	LiveData
-•	RxJava
-•	RxAndroid
-•	Android Paging Library
-•	Robolectric
-•	Mockito
+  <li>Android Support Libraries</li>
+ <li>Dagger 2</li>
+ <li>Retrofit</li>
+ <li>OkHttp</li>
+ <li>Room</li>
+ <li>ViewModel</li>
+ <li>LiveData</li>
+ <li>RxJava</li>
+ <li>RxAndroid</li>
+ <li>Android Paging Library</li>
+ <li>Robolectric</li>
+ <li>Mockito</li>
   <ul>
