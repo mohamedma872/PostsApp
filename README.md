@@ -9,7 +9,8 @@ The App Features
 •	All the data is first tried to be loaded from the db and then updated from the server. This ensures that the app is usable even in an offline mode.
 •	Made unit testing using Robolectric and Mockito , Junit
 
-Libraries used
+Libraries used:
+
 •	Android Support Libraries
 •	Dagger 2
 •	Retrofit
