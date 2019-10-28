@@ -8,7 +8,7 @@ The App Features
 <li>I Used the lifecycle aware viewmodels, the view observes changes in the model / repository.</li>
 <li>All the data is first tried to be loaded from the db and then updated from the server. This ensures that the app is usable even in an offline mode.</li>
 <li>Made unit testing using Robolectric and Mockito , Junit</li>
- <ul>
+ </ul>
 <h>Libraries used:</h>
 <ul>
   <li>Android Support Libraries</li>
