@@ -10,8 +10,8 @@ The App Features
 •	Made unit testing using Robolectric and Mockito , Junit
 
 Libraries used:
-
-•	Android Support Libraries
+<ul>
+  <li>•	Android Support Libraries</li>
 •	Dagger 2
 •	Retrofit
 •	OkHttp
@@ -23,3 +23,4 @@ Libraries used:
 •	Android Paging Library
 •	Robolectric
 •	Mockito
+  <ul>
