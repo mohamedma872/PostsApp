@@ -1,6 +1,7 @@
 # PostsApp
 
-The App Features
+The App Features:
+
 <ul>
  <li>When there is no internet connection and the user would like to add / update / delete post , the app saves this operations and sync it when internet valid.</li>
 <li>I built modular and scalable Android app using Kotlin, Android Architecture Components (LiveData, ViewModel & Room), Dagger, RxJava and RxAndroid among others.</li>
