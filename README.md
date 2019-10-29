@@ -1,5 +1,6 @@
 # PostsApp
 
+[![CodeFactor](https://www.codefactor.io/repository/github/mohamedma872/postsapp/badge)](https://www.codefactor.io/repository/github/mohamedma872/postsapp)
 
 
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/0ed6c26d28884af8bef108b3f02326a3)](https://www.codacy.com/manual/mohamedma872/PostsApp?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=mohamedma872/PostsApp&amp;utm_campaign=Badge_Grade)
