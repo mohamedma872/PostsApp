@@ -22,15 +22,15 @@ class PostListAdapter
 
         holder.itemView.btnDelete.setOnClickListener {
             interaction?.postDeleted(
-                getItem(position),
-                holder.itemView.tag as Int, holder
+
+                holder
             )
 
         }
         holder.itemView.btnEdit.setOnClickListener {
             interaction?.postEdit(
-                getItem(position),
-                holder.itemView.tag as Int, holder
+
+                holder
             )
         }
         holder.itemView.setOnClickListener {

@@ -3,6 +3,7 @@ package com.sdody.postsapp.details
 import android.os.Bundle
 import com.sdody.postsapp.R
 import com.sdody.postsapp.application.BaseActivity
+import com.sdody.postsapp.constants.Constants
 import kotlinx.android.synthetic.main.activity_detail.*
 
 class DetailActivity : BaseActivity() {
@@ -10,17 +11,20 @@ class DetailActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail)
 
-        if (intent.hasExtra("tittle")) {
-            if (!(intent.getStringExtra("tittle")).isNullOrEmpty()) {
-                val tittletxt: String = intent.getStringExtra("tittle")
-                tittle.text = tittletxt
+        when {
+            validate(Constants.POSTTITTLE) -> {
+                tittletxt.text = intent.getStringExtra(Constants.POSTTITTLE)
+                bodytxt.text = intent.getStringExtra(Constants.POSTBody)
             }
         }
-        if (intent.hasExtra("body")) {
-            if (!(intent.getStringExtra("body")).isNullOrEmpty()) {
-                val bodytxt: String = intent.getStringExtra("body")
-                body.text = bodytxt
+    }
+
+    fun validate(extraname: String): Boolean {
+        when {
+            intent.hasExtra(extraname) -> if (!(intent.getStringExtra(extraname)).isNullOrEmpty()) {
+                return true
             }
         }
+        return false
     }
 }

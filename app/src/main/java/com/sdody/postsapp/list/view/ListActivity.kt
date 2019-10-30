@@ -14,6 +14,7 @@ import com.sdody.postsapp.R
 import com.sdody.postsapp.application.BaseActivity
 import com.sdody.postsapp.commons.data.local.Post
 import com.sdody.postsapp.commons.networking.State
+import com.sdody.postsapp.constants.Constants
 import com.sdody.postsapp.details.DetailActivity
 import com.sdody.postsapp.list.adapter.Interaction
 import com.sdody.postsapp.list.adapter.PostListAdapter
@@ -41,7 +42,6 @@ class ListActivity : BaseActivity(), Interaction, View.OnClickListener {
 
     private val context: Context by lazy { this }
 
-    //private val TAG = "ListActivity"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -87,9 +87,6 @@ class ListActivity : BaseActivity(), Interaction, View.OnClickListener {
         // i will use it when request data on demand
 //
         viewModel.getAddedCallback().observe(this, Observer<State> { state ->
-//            if (state == State.LOADING) {
-//
-//            }
             if (state == State.DONE) {
                 Toast.makeText(
                     context,
@@ -106,9 +103,7 @@ class ListActivity : BaseActivity(), Interaction, View.OnClickListener {
             }
         })
         viewModel.getDeletedCallback().observe(this, Observer<State> { state ->
-//            if (state == State.LOADING) {
-//
-//            }
+
             if (state == State.DONE) {
                 Toast.makeText(
                     context,
@@ -125,9 +120,7 @@ class ListActivity : BaseActivity(), Interaction, View.OnClickListener {
             }
         })
         viewModel.getUpdatedCallback().observe(this, Observer<State> { state ->
-//            if (state == State.LOADING) {
-//
-//            }
+
             if (state == State.DONE) {
                 Toast.makeText(
                     context,
@@ -138,7 +131,7 @@ class ListActivity : BaseActivity(), Interaction, View.OnClickListener {
             if (state == State.ERROR) {
                 Toast.makeText(
                     context,
-                    "updating fail because of internet connection so we will store it and sync it when connected to internet",
+                    getString(R.string.connectionfail),
                     Toast.LENGTH_LONG
                 ).show()
             }
@@ -186,7 +179,7 @@ class ListActivity : BaseActivity(), Interaction, View.OnClickListener {
         }
     }
 
-    private fun showDeleteDialog(position: Int, post: Post?) {
+    private fun showDeleteDialog(post: Post?) {
         val dialogBuilder = AlertDialog.Builder(this)
         dialogBuilder.setTitle("Delete")
         dialogBuilder.setMessage("Confirm delete?")
@@ -206,7 +199,7 @@ class ListActivity : BaseActivity(), Interaction, View.OnClickListener {
     }
 
     @SuppressLint("InflateParams")
-    private fun showUpdateDialog(position: Int, post: Post?) {
+    private fun showUpdateDialog(post: Post?) {
         val mBuilder = AlertDialog.Builder(this)
 
         val mDialogView = LayoutInflater.from(this).inflate(R.layout.add_post, null)
@@ -254,16 +247,19 @@ class ListActivity : BaseActivity(), Interaction, View.OnClickListener {
 
     override fun postClicked(holder: PostViewHolder) {
         val intent = Intent(this, DetailActivity::class.java)
-        intent.putExtra("tittle", adapter.getElementItem(holder.adapterPosition).postTitle)
-        intent.putExtra("body", adapter.getElementItem(holder.adapterPosition).postBody)
+        intent.putExtra(
+            Constants.POSTTITTLE,
+            adapter.getElementItem(holder.adapterPosition).postTitle
+        )
+        intent.putExtra(Constants.POSTBody, adapter.getElementItem(holder.adapterPosition).postBody)
         startActivity(intent)
     }
 
-    override fun postEdit(post: Post?, position: Int,holder: PostViewHolder) {
-        showUpdateDialog(position, adapter.getElementItem(holder.adapterPosition))
+    override fun postEdit(holder: PostViewHolder) {
+        showUpdateDialog(adapter.getElementItem(holder.adapterPosition))
     }
 
-    override fun postDeleted(post: Post?, position: Int,holder: PostViewHolder) {
-        showDeleteDialog(position, adapter.getElementItem(holder.adapterPosition))
+    override fun postDeleted(holder: PostViewHolder) {
+        showDeleteDialog(adapter.getElementItem(holder.adapterPosition))
     }
 }
