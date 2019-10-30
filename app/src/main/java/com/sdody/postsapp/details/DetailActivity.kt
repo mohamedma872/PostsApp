@@ -10,7 +10,6 @@ class DetailActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail)
-
         when {
             validate(Constants.POSTTITTLE) -> {
                 tittletxt.text = intent.getStringExtra(Constants.POSTTITTLE)
@@ -19,10 +18,11 @@ class DetailActivity : BaseActivity() {
         }
     }
 
-    fun validate(extraname: String): Boolean {
+    private fun validate(extra: String): Boolean {
         when {
-            intent.hasExtra(extraname) -> if (!(intent.getStringExtra(extraname)).isNullOrEmpty()) {
-                return true
+            intent.hasExtra(extra) -> when {
+                !(intent.getStringExtra(extra)).isNullOrEmpty() ->
+                    return true
             }
         }
         return false

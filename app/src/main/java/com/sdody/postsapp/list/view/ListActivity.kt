@@ -83,15 +83,15 @@ class ListActivity : BaseActivity(), Interaction, View.OnClickListener {
         })
         //Observe the outcome and update state of the screen  accordingly
         viewModel.getpostCrudCallback().observe(this, Observer<State> { state ->
-            if (state == State.DONE) {
-                Toast.makeText(
+            when (state) {
+                State.DONE -> Toast.makeText(
                     context,
                     getString(R.string.succefuly),
                     Toast.LENGTH_LONG
                 ).show()
             }
-            if (state == State.ERROR) {
-                Toast.makeText(
+            when (state) {
+                State.ERROR -> Toast.makeText(
                     context,
                     getString(R.string.failopertaion),
                     Toast.LENGTH_LONG
@@ -107,13 +107,16 @@ class ListActivity : BaseActivity(), Interaction, View.OnClickListener {
 
         val mDialogView = LayoutInflater.from(this).inflate(R.layout.add_post, null)
         mBuilder.setView(mDialogView)
-        if (post != null) {
-            mBuilder.setTitle(getString(R.string.updatepost))
-            mDialogView.tittletxt.setText(post.postTitle)
-            mDialogView.bodytxt.setText(post.postBody)
-        } else {
-            mBuilder.setTitle(getString(R.string.newposttittle))
-            mBuilder.setMessage(getString(R.string.postdetails))
+        when {
+            post != null -> {
+                mBuilder.setTitle(getString(R.string.updatepost))
+                mDialogView.tittletxt.setText(post.postTitle)
+                mDialogView.bodytxt.setText(post.postBody)
+            }
+            else -> {
+                mBuilder.setTitle(getString(R.string.newposttittle))
+                mBuilder.setMessage(getString(R.string.postdetails))
+            }
         }
         //show dialog
         val mAlertDialog = mBuilder.show()
@@ -124,21 +127,25 @@ class ListActivity : BaseActivity(), Interaction, View.OnClickListener {
             val tittle = mDialogView.tittletxt.text.toString()
             val body = mDialogView.bodytxt.text.toString()
             //set the input text in TextView
-            if (tittle.isEmpty() || body.isEmpty()) {
-                Toast.makeText(
+            when {
+                tittle.isEmpty() || body.isEmpty() -> Toast.makeText(
                     context,
                     getString(R.string.tittlecannotbeempty),
                     Toast.LENGTH_LONG
                 ).show()
-            } else {
-                if (post != null) {
-                    val localpost = Post(1, post.postId, tittle, body, false, 2)
-                    viewModel.updatePost(localpost)
-                } else {
-                    val localpost = Post(1, System.currentTimeMillis(), tittle, body, false, 1)
-                    viewModel.addPost(localpost)
+                else -> {
+                    when {
+                        post != null -> {
+                            val localpost = Post(1, post.postId, tittle, body, false, 2)
+                            viewModel.updatePost(localpost)
+                        }
+                        else -> {
+                            val localpost =
+                                Post(1, System.currentTimeMillis(), tittle, body, false, 1)
+                            viewModel.addPost(localpost)
+                        }
+                    }
                 }
-
             }
 
         }
@@ -157,11 +164,9 @@ class ListActivity : BaseActivity(), Interaction, View.OnClickListener {
         dialogBuilder.setTitle(getString(R.string.deletetittle))
         dialogBuilder.setMessage(getString(R.string.confirmdelete))
         dialogBuilder.setPositiveButton(getString(R.string.deletebtn)) { dialog, whichButton ->
-            if (post != null) {
-               // adapter.deleteItem(position)
-                viewModel.deletePost(post)
-               // adapter.notifyItemRemoved(position)
-
+            when {
+                post != null ->
+                    viewModel.deletePost(post)
             }
         }
         dialogBuilder.setNegativeButton(getString(R.string.cancel)) { dialog, whichButton ->

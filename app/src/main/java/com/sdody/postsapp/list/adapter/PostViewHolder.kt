@@ -12,7 +12,8 @@ class PostViewHolder(view: View) : RecyclerView.ViewHolder(view)  {
 
 
     fun bind(post: Post?) {
-        if (post != null) {
+        when {
+            post != null ->
             itemView.tittle.text = post.postTitle
         }
     }
