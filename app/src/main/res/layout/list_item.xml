@@ -30,7 +30,6 @@
             android:id="@+id/btnDelete"
             android:layout_width="wrap_content"
             android:layout_height="35dp"
-            android:drawableLeft="@android:drawable/ic_delete"
             android:padding="5dp"
             android:drawableStart="@android:drawable/ic_delete" />
 

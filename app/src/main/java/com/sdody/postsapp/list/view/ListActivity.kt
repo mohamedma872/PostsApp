@@ -1,5 +1,6 @@
 package com.sdody.postsapp.list.view
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -145,6 +146,7 @@ class ListActivity : BaseActivity(), Interaction, View.OnClickListener {
 
     }
 
+    @SuppressLint("InflateParams")
     private fun showNewDialog() {
         val mBuilder = AlertDialog.Builder(this)
 
@@ -203,6 +205,7 @@ class ListActivity : BaseActivity(), Interaction, View.OnClickListener {
         b.show()
     }
 
+    @SuppressLint("InflateParams")
     private fun showUpdateDialog(position: Int, post: Post?) {
         val mBuilder = AlertDialog.Builder(this)
 
