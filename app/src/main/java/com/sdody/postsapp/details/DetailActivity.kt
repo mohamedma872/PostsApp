@@ -21,7 +21,7 @@ class DetailActivity : BaseActivity() {
     private fun validate(extra: String): Boolean {
         when {
             intent.hasExtra(extra) -> when {
-                !(intent.getStringExtra(extra)).isNullOrEmpty() ->
+                !intent.getStringExtra(extra).isNullOrEmpty() ->
                     return true
             }
         }
