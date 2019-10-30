@@ -10,11 +10,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="15dp"
-        android:text="Tittle :"
+        android:text="@string/tittle"
         android:layout_margin="5dp"
         />
     <TextView
-        android:id="@+id/tittle"
+        android:id="@+id/tittletxt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="10dp"
@@ -25,12 +25,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="15dp"
-        android:text="Body :"
+        android:text="@string/body"
         android:layout_margin="5dp"
         />
     <TextView
         android:layout_margin="5dp"
-        android:id="@+id/body"
+        android:id="@+id/bodytxt"
         android:background="@drawable/rounded_border_edittext"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

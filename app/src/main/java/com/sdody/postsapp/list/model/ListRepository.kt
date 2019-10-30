@@ -5,7 +5,8 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.DataSource
 import com.sdody.postsapp.commons.data.local.Post
-import com.sdody.postsapp.commons.extensions.*
+import com.sdody.postsapp.commons.extensions.addTo
+import com.sdody.postsapp.commons.extensions.performOnBackOutOnMain
 import com.sdody.postsapp.commons.networking.Scheduler
 import com.sdody.postsapp.commons.networking.State
 import io.reactivex.disposables.CompositeDisposable
@@ -24,10 +25,7 @@ class ListRepository(
     ) {
         allPosts()
     }
-    override val postAddedCallback: MutableLiveData<State> = MutableLiveData()
-    override val postUpdatedCallback: MutableLiveData<State> = MutableLiveData()
-    override val postDeletedCallback: MutableLiveData<State> = MutableLiveData()
-
+    override val postCrudCallback: MutableLiveData<State> = MutableLiveData()
     override var listener: ((List<Post>) -> Unit)? = null
 
 
@@ -35,6 +33,34 @@ class ListRepository(
         return local.getPosts()
     }
 
+    fun getaddedPostsNotSynced(post: Post) {
+        if (post.opertaionType == 1) {
+            // operation type 1 for insert new post
+            remote.addPost(post).performOnBackOutOnMain(scheduler).subscribe {
+                //to indicate that post is synced to server
+                post.issynced = true
+                local.editPost(post)
+            }.addTo(compositeDisposable)
+        }
+    }
+
+    fun getupdatedPostsNotSynced(post: Post) {
+        if (post.opertaionType == 2) {
+            // operation type 2 for update new post
+            remote.editPost(post).performOnBackOutOnMain(scheduler).subscribe {
+                //to indicate that post is synced to server
+                post.issynced = true
+                local.editPost(post)
+            }.addTo(compositeDisposable)
+        }
+    }
+
+    fun getdeletedPostsNotSynced(post: Post) {
+        if (post.opertaionType == 3) {
+            // operation type 3 for delete new post
+            deletePost(post)
+        }
+    }
     override fun getPostsNotSynced() {
         // operation type 0 for default
         try {
@@ -44,48 +70,29 @@ class ListRepository(
                     if(posts.isNotEmpty())
                     {
                         for (post in posts) {
-                            if (post.opertaionType == 1) {
-                                // operation type 1 for insert new post
-                                remote.addPost(post).performOnBackOutOnMain(scheduler).subscribe {
-                                    //to indicate that post is synced to server
-                                    post.issynced = true
-                                    local.editPost(post)
-                                }.addTo(compositeDisposable)
-                            }
-                            if (post.opertaionType == 2) {
-                                // operation type 2 for update new post
-                                remote.editPost(post).performOnBackOutOnMain(scheduler).subscribe {
-                                    //to indicate that post is synced to server
-                                    post.issynced = true
-                                    local.editPost(post)
-                                }.addTo(compositeDisposable)
-                            }
-                            if (post.opertaionType == 3) {
-                                // operation type 3 for delete new post
-                               deletePost(post)
-                            }
+                            getupdatedPostsNotSynced(post)
+                            getupdatedPostsNotSynced(post)
+                            getdeletedPostsNotSynced(post)
                         }
                     }
-
                 }, { error -> handleError(error) })
                 .addTo(compositeDisposable)
         }catch (ex:Exception)
         {
             Log.e("getPostsNotSynced",ex.message)
         }
-
     }
 
     override fun getPostsFromRemote(page: Int, pageSize: Int) {
 
         remote.getPosts(page, pageSize).performOnBackOutOnMain(scheduler)
             .subscribe({ res ->
-                if (res != null) {
-
-                    if (res.isNotEmpty()) {
-                        //listener?.invoke(res)
-                        savedPosts(res)
-                        getPostsFromRemote(page + pageSize, pageSize)
+                when {
+                    res != null -> when {
+                        res.isNotEmpty() -> {
+                            savedPosts(res)
+                            getPostsFromRemote(page + pageSize, pageSize)
+                        }
                     }
                 }
 
@@ -115,7 +122,7 @@ class ListRepository(
             remote.deletePost(post).performOnBackOutOnMain(scheduler).subscribe({
                 local.deletePost(post)
 
-                postDeletedCallback.postValue(State.DONE)
+                postCrudCallback.postValue(State.DONE)
 
             }, {
                 //to update post in db that is not synced
@@ -123,7 +130,7 @@ class ListRepository(
                 post.opertaionType = 3
                 local.editPost(post)
                 //push updates to UI
-                postDeletedCallback.postValue(State.ERROR)
+                postCrudCallback.postValue(State.ERROR)
             }).addTo(compositeDisposable)
 
 
@@ -132,22 +139,22 @@ class ListRepository(
     override fun editPost(post: Post) {
         local.editPost(post)
         remote.editPost(post).performOnBackOutOnMain(scheduler).subscribe({
-            postUpdatedCallback.postValue(State.DONE)
+            postCrudCallback.postValue(State.DONE)
             //to indicate that post is synced to server
             post.issynced = true
             local.editPost(post)
-        }, { postUpdatedCallback.postValue(State.ERROR) }).addTo(compositeDisposable)
+        }, { postCrudCallback.postValue(State.ERROR) }).addTo(compositeDisposable)
 
     }
 
     override fun addPost(post: Post) {
         local.addPost(post)
         remote.addPost(post).performOnBackOutOnMain(scheduler).subscribe({
-            postAddedCallback.postValue(State.DONE)
+            postCrudCallback.postValue(State.DONE)
             //to indicate that post is synced to server
             post.issynced = true
             local.editPost(post)
-        }, { postAddedCallback.postValue(State.ERROR) }).addTo(compositeDisposable)
+        }, { postCrudCallback.postValue(State.ERROR) }).addTo(compositeDisposable)
 
     }
 

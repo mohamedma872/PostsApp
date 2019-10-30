@@ -3,22 +3,17 @@ package com.sdody.postsapp.list.model
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.DataSource
 import com.sdody.postsapp.commons.data.local.Post
-import com.sdody.postsapp.commons.networking.Outcome
 import com.sdody.postsapp.commons.networking.State
 import io.reactivex.Completable
-import io.reactivex.Flowable
 import io.reactivex.Single
-import io.reactivex.subjects.PublishSubject
 
 interface ListDataContract {
 
     interface Repository {
         val paginatedChatElements: DataSource.Factory<Int, Post>
         var listener: ((List<Post>)->Unit)?
-       // val postFetchOutcome: PublishSubject<Outcome<List<Post>>>
-        val postAddedCallback:  MutableLiveData<State>
-        val postUpdatedCallback:  MutableLiveData<State>
-        val postDeletedCallback:  MutableLiveData<State>
+        val postCrudCallback: MutableLiveData<State>
+
         fun getPostsFromRemote(page: Int,pageSize: Int)
         fun getPostsLocal():List<Post>
         fun allPosts(): DataSource.Factory<Int, Post>

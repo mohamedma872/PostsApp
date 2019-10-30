@@ -1,12 +1,12 @@
 package com.sdody.postsapp.application
 
 import android.app.Application
-import com.sdody.postsapp.commons.di.moduls.AppModule
 import com.sdody.postsapp.commons.di.component.CoreComponent
 import com.sdody.postsapp.commons.di.component.DaggerCoreComponent
+import com.sdody.postsapp.commons.di.moduls.AppModule
 
 
-open class MyApp : Application() {
+open class BaseApp : Application() {
 
     companion object {
         lateinit var coreComponent: CoreComponent
