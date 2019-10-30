@@ -5,8 +5,8 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import android.view.MenuItem
+import androidx.appcompat.app.AppCompatActivity
 
 @SuppressLint("Registered")
 abstract class BaseActivity : AppCompatActivity() {
@@ -32,7 +32,7 @@ abstract class BaseActivity : AppCompatActivity() {
         val connectivityManager =
             this.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val activeNetwork: NetworkInfo? = connectivityManager.activeNetworkInfo
-        return activeNetwork?.isConnected == true
+        return activeNetwork?.isConnected ?: false
     }
 
 }
