@@ -15,7 +15,7 @@
             tools:listitem="@layout/list_item"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab"
+        android:id="@+id/fabbtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"

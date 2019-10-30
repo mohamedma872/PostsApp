@@ -6,4 +6,8 @@
     <string name="cancel">Cancel</string>
     <string name="lastname">lastname</string>
     <string name="connectionfail">updating fail because of internet connection so we will store it and sync it when connected to internet</string>
+    <string name="failopertaion">fail because of internet connection so we will store it and sync it when connected to internet</string>
+    <string name="sync">we will check now for any operation not sync like add / update</string>
+    <string name="nointernet">there is no internet connection</string>
+    <string name="succefuly">succefuly</string>
 </resources>
