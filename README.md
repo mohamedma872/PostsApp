@@ -8,6 +8,8 @@
 
 <a href="https://codeclimate.com/github/mohamedma872/PostsApp/maintainability"><img src="https://api.codeclimate.com/v1/badges/c7f61d857472f67f1fb8/maintainability" /></a>
 
+[![Maintainability](https://api.codeclimate.com/v1/badges/c7f61d857472f67f1fb8/maintainability)](https://codeclimate.com/github/mohamedma872/PostsApp/maintainability)
+
 
 
 
