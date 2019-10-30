@@ -40,7 +40,7 @@ class ListActivity : BaseActivity(), Interaction, View.OnClickListener {
 
     private val context: Context by lazy { this }
 
-    private val TAG = "ListActivity"
+    //private val TAG = "ListActivity"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,7 +53,7 @@ class ListActivity : BaseActivity(), Interaction, View.OnClickListener {
         fab.setOnClickListener(this)
         initiateDataListener()
         //sync posts
-        if(IsConnected())
+        if(isConnected())
         {
             Toast.makeText(
                 context,
@@ -86,9 +86,9 @@ class ListActivity : BaseActivity(), Interaction, View.OnClickListener {
         // i will use it when request data on demand
 //
         viewModel.getAddedCallback().observe(this, Observer<State> { state ->
-            if (state == State.LOADING) {
-
-            }
+//            if (state == State.LOADING) {
+//
+//            }
             if (state == State.DONE) {
                 Toast.makeText(
                     context,
@@ -105,9 +105,9 @@ class ListActivity : BaseActivity(), Interaction, View.OnClickListener {
             }
         })
         viewModel.getDeletedCallback().observe(this, Observer<State> { state ->
-            if (state == State.LOADING) {
-
-            }
+//            if (state == State.LOADING) {
+//
+//            }
             if (state == State.DONE) {
                 Toast.makeText(
                     context,
@@ -124,9 +124,9 @@ class ListActivity : BaseActivity(), Interaction, View.OnClickListener {
             }
         })
         viewModel.getUpdatedCallback().observe(this, Observer<State> { state ->
-            if (state == State.LOADING) {
-
-            }
+//            if (state == State.LOADING) {
+//
+//            }
             if (state == State.DONE) {
                 Toast.makeText(
                     context,
@@ -152,8 +152,8 @@ class ListActivity : BaseActivity(), Interaction, View.OnClickListener {
 
         mBuilder.setView(mDialogView)
 
-        mBuilder.setTitle("New Post")
-        mBuilder.setMessage("Enter Post Details")
+        mBuilder.setTitle("New post")
+        mBuilder.setMessage("Enter post Details")
 
         //show dialog
         val mAlertDialog = mBuilder.show()
@@ -165,7 +165,7 @@ class ListActivity : BaseActivity(), Interaction, View.OnClickListener {
             val tittle = mDialogView.tittle.text.toString()
             val body = mDialogView.body.text.toString()
             //set the input text in TextView
-            if (tittle.isNullOrEmpty() || body.isNullOrEmpty()) {
+            if (tittle.isEmpty() || body.isEmpty()) {
                 Toast.makeText(
                     context,
                     "tittle or body cannot be empty",
@@ -210,7 +210,7 @@ class ListActivity : BaseActivity(), Interaction, View.OnClickListener {
 
         mBuilder.setView(mDialogView)
 
-        mBuilder.setTitle("Update Post")
+        mBuilder.setTitle("Update post")
         if (post != null) {
             mDialogView.tittle.setText(post.postTitle)
             mDialogView.body.setText(post.postBody)
@@ -226,7 +226,7 @@ class ListActivity : BaseActivity(), Interaction, View.OnClickListener {
             val body = mDialogView.body.text.toString()
             //set the input text in TextView
 
-            if (tittle.isNullOrEmpty() || body.isNullOrEmpty()) {
+            if (tittle.isEmpty() || body.isEmpty()) {
                 Toast.makeText(
                     context,
                     "tittle or body cannot be empty",

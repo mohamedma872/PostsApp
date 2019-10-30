@@ -11,9 +11,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="3dp"
-        android:text="Tittle :"
+        android:text="@string/tittle"
         android:layout_margin="2dp"
-        android:hint="@string/tittle"
         />
     <EditText
         android:id="@+id/tittle"
@@ -27,12 +26,13 @@
         android:ems="120"
         android:background="@drawable/rounded_border_edittext"
         android:scrollbars="vertical"
-        android:padding="5dp" />
+        android:padding="5dp"
+        android:importantForAutofill="no" />
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="3dp"
-        android:text="Body :"
+        android:text="@string/body"
         android:layout_margin="2dp"
         />
     <EditText
@@ -54,12 +54,7 @@
         android:gravity="center"
         android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/dialogLoginBtn"
-            style="@style/Base.Widget.AppCompat.Button.Colored"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/save" />
+
 
         <Button
             android:id="@+id/dialogCancelBtn"
@@ -67,6 +62,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/cancel" />
+        <Button
+            android:id="@+id/dialogLoginBtn"
+            style="@style/Base.Widget.AppCompat.Button.Colored"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/save" />
     </LinearLayout>
 
 </LinearLayout>

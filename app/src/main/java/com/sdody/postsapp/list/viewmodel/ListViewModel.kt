@@ -26,11 +26,10 @@ class ListViewModel(
 
 
     lateinit var postList: LiveData<PagedList<Post>>
-    var factory: DataSource.Factory<Int, Post>
+    var factory: DataSource.Factory<Int, Post> = repo.allPosts()
 
     init {
 
-         factory = repo.allPosts()
         if (factory!=null)
         {
             val config = PagedList.Config.Builder()
@@ -85,10 +84,5 @@ class ListViewModel(
         compositeDisposable.clear()
         PostDH.destroyListComponent()
     }
-    fun invalidateDataSource() {
 
-       postList.value?.dataSource?.invalidate()
-
-
-    }
 }

@@ -1,7 +1,5 @@
 package com.sdody.postsapp.list.adapter
 
-import android.util.Log
-import android.view.View
 import android.view.ViewGroup
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil

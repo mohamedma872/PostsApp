@@ -24,7 +24,7 @@ class ListViewModelTest {
     private val repo: ListDataContract.Repository = mock()
 
     private var postList: LiveData<PagedList<Post>> = mock()
-    //private val factory: DataSource.Factory<Int, Post> = mock()
+    //private val factory: DataSource.Factory<Int, post> = mock()
 
 
     @Before

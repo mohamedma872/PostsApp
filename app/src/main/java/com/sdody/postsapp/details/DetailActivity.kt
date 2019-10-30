@@ -12,13 +12,13 @@ class DetailActivity : BaseActivity() {
 
         if (intent.hasExtra("tittle")) {
             if (!(intent.getStringExtra("tittle")).isNullOrEmpty()) {
-                var tittletxt: String = intent.getStringExtra("tittle")
+                val tittletxt: String = intent.getStringExtra("tittle")
                 tittle.text = tittletxt
             }
         }
         if (intent.hasExtra("body")) {
             if (!(intent.getStringExtra("body")).isNullOrEmpty()) {
-                var bodytxt: String = intent.getStringExtra("body")
+                val bodytxt: String = intent.getStringExtra("body")
                 body.text = bodytxt
             }
         }

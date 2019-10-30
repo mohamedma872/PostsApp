@@ -28,12 +28,11 @@ abstract class BaseActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
-    fun IsConnected(): Boolean {
+    fun isConnected(): Boolean {
         val connectivityManager =
             this.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val activeNetwork: NetworkInfo? = connectivityManager.activeNetworkInfo
-        val isConnected: Boolean = activeNetwork?.isConnected == true
-        return isConnected
+        return activeNetwork?.isConnected == true
     }
 
 }

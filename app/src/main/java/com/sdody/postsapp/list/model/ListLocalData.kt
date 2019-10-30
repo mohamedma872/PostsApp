@@ -6,7 +6,6 @@ import com.sdody.postsapp.commons.data.local.PostDb
 import com.sdody.postsapp.commons.extensions.performOnBack
 import com.sdody.postsapp.commons.networking.Scheduler
 import io.reactivex.Completable
-import io.reactivex.Flowable
 import io.reactivex.Single
 
 class ListLocalData(private val postDb: PostDb, private val scheduler: Scheduler) : ListDataContract.Local {
