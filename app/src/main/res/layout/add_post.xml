@@ -15,7 +15,7 @@
         android:layout_margin="2dp"
         />
     <EditText
-        android:id="@+id/tittle"
+        android:id="@+id/tittletxt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="2dp"
@@ -36,7 +36,7 @@
         android:layout_margin="2dp"
         />
     <EditText
-        android:id="@+id/body"
+        android:id="@+id/bodytxt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="2dp"

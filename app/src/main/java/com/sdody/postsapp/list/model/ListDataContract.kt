@@ -12,10 +12,8 @@ interface ListDataContract {
     interface Repository {
         val paginatedChatElements: DataSource.Factory<Int, Post>
         var listener: ((List<Post>)->Unit)?
-       // val postFetchOutcome: PublishSubject<Outcome<List<post>>>
-        val postAddedCallback:  MutableLiveData<State>
-        val postUpdatedCallback:  MutableLiveData<State>
-        val postDeletedCallback:  MutableLiveData<State>
+        val postCrudCallback: MutableLiveData<State>
+
         fun getPostsFromRemote(page: Int,pageSize: Int)
         fun getPostsLocal():List<Post>
         fun allPosts(): DataSource.Factory<Int, Post>

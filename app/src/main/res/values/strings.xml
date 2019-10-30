@@ -6,4 +6,15 @@
     <string name="cancel">Cancel</string>
     <string name="lastname">lastname</string>
     <string name="connectionfail">updating fail because of internet connection so we will store it and sync it when connected to internet</string>
+    <string name="failopertaion">fail because of internet connection so we will store it and sync it when connected to internet</string>
+    <string name="sync">we will check now for any operation not sync like add / update</string>
+    <string name="nointernet">there is no internet connection</string>
+    <string name="succefuly">succefuly</string>
+    <string name="updatepost">Update post</string>
+    <string name="tittlecannotbeempty">tittle or body cannot be empty</string>
+    <string name="deletetittle">Delete</string>
+    <string name="confirmdelete">Confirm delete?</string>
+    <string name="deletebtn">Delete</string>
+    <string name="newposttittle">New post</string>
+    <string name="postdetails">Enter post Details</string>
 </resources>

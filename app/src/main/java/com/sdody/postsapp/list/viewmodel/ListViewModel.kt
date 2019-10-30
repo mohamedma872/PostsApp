@@ -24,24 +24,18 @@ class ListViewModel(
     //paging
 
 
-
-    lateinit var postList: LiveData<PagedList<Post>>
+    var postList: LiveData<PagedList<Post>>
     var factory: DataSource.Factory<Int, Post> = repo.allPosts()
 
     init {
 
-        if (factory!=null)
-        {
+
             val config = PagedList.Config.Builder()
                 .setPageSize(PAGE_SIZE)
                 .setInitialLoadSizeHint(INITIAL_LOAD_SIZE_HINT)
                 .setEnablePlaceholders(true)
                 .build()
             postList = LivePagedListBuilder(repo.allPosts(), config).build()
-
-        }
-
-
     }
 
     fun getPostsNotSynced() {
@@ -66,17 +60,10 @@ class ListViewModel(
         repo.editPost(post)
     }
 
-    fun getAddedCallback(): MutableLiveData<State> {
-        return repo.postAddedCallback
+    fun getpostCrudCallback(): MutableLiveData<State> {
+        return repo.postCrudCallback
     }
 
-    fun getUpdatedCallback(): MutableLiveData<State> {
-        return repo.postUpdatedCallback
-    }
-
-    fun getDeletedCallback(): MutableLiveData<State> {
-        return repo.postDeletedCallback
-    }
 
     override fun onCleared() {
         super.onCleared()
